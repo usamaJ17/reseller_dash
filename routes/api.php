@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,3 +25,11 @@ Route::post('register',[AuthController::class,'register']);
 Route::post('login',[AuthController::class,'login'])->middleware('cros');;
 Route::post('logout',[AuthController::class,'logout'])
   ->middleware('auth:sanctum');
+
+Route::middleware(['auth:sanctum','add.token'])->group(function () {
+  Route::get('products',[ProductController::class,'getAll']);
+  Route::get('product_detail/{id}',[ProductController::class,'getDetails']);
+  Route::get('product_by_category/{id}',[ProductController::class,'getProductByCategory']);
+  Route::get('category',[ProductController::class,'getAllCategory']);
+  Route::resource('client', ClientController::class);
+});
