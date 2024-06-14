@@ -22,14 +22,13 @@ use App\Http\Controllers\ProductController;
 // });
 
 Route::post('register',[AuthController::class,'register']);
-Route::post('login',[AuthController::class,'login'])->middleware('cros');;
-Route::post('logout',[AuthController::class,'logout'])
-  ->middleware('auth:sanctum');
+Route::post('login',[AuthController::class,'login'])->middleware('cros');
 
-Route::middleware(['auth:sanctum','add.token'])->group(function () {
+Route::middleware(['auth:sanctum','cros','add.token'])->group(function () {
   Route::get('products',[ProductController::class,'getAll']);
   Route::get('product_detail/{id}',[ProductController::class,'getDetails']);
   Route::get('product_by_category/{id}',[ProductController::class,'getProductByCategory']);
   Route::get('category',[ProductController::class,'getAllCategory']);
   Route::resource('client', ClientController::class);
+  Route::post('logout',[AuthController::class,'logout']);
 });
