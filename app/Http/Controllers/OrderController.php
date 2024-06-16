@@ -20,7 +20,7 @@ class OrderController extends Controller
             $response = Http::withToken(Auth::user()->jwt_token)
             ->get(env('ADMIN_PORTAL_URL').'/product-details'.'/'.$item['id']);   
             $responseJson = $response->json(); 
-            $p_price = $responseJson['data']['price'];
+            $p_price = (int)$responseJson['data']['price'];
             $commission += ($item['custom_price'] - $p_price);
             $price += $p_price;
         }
