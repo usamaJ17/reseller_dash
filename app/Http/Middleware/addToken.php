@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Http;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -20,7 +21,7 @@ class addToken
         if(Auth::check()){
             $user=Auth::user();
             if($user->jwt_token == "" || $user->jwt_token == null){
-                $dc = decrypt($user->jwt_password);
+                $dc = Crypt::decrypt($request->jwt_password);
                 $response = Http::post(env('ADMIN_PORTAL_URL').'/login', [
                     'email' => $user->email,
                     'password' => $dc,

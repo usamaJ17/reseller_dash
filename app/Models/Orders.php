@@ -9,6 +9,10 @@ class Orders extends Model
 {
     use HasFactory;
     protected $fillable =[
-        'commission','status','customer_name','total_amount','reseller_id'
+        'commission',
+        'status',
+        'customer_name',
+        'total_amount',
+        'reseller_id'
     ];
 }

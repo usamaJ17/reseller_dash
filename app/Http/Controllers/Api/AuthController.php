@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
@@ -21,6 +22,7 @@ class AuthController extends Controller
     		$user = New User();
     	    $user->name = $request->name;
     	    $user->email = $request->email;
+            $user->jwt_password = Crypt::encrypt($request->password);
     	    $user->password = Hash::make($request->password);
     	    $user->save();
             $requestParameters = [
