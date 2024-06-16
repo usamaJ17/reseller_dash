@@ -21,7 +21,7 @@ class addToken
         if(Auth::check()){
             $user=Auth::user();
             if($user->jwt_token == "" || $user->jwt_token == null){
-                $dc = Crypt::decrypt($request->jwt_password);
+                $dc = Crypt::decrypt($user->jwt_password);
                 $response = Http::post(env('ADMIN_PORTAL_URL').'/login', [
                     'email' => $user->email,
                     'password' => $dc,
