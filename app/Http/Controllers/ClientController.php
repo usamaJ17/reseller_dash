@@ -12,7 +12,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $client = Client::where('reseller_id',auth()->user()->id)->get();
+        $client = Client::where('reseller_id',auth()->user()->id)->get()->toArray();
         $data=[
             'message' => 'Fetched Succsessfully',
             'data' => $client
