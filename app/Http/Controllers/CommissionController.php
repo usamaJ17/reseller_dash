@@ -40,7 +40,7 @@ class CommissionController extends Controller
 
     public function getallPayout(){
         $response = Http::get('https://test.whitexdigital.com/api/get_payout/11');   
-        // $responseJson = $response->json();     
+        $responseJson = $response->json();     
         $order = [
             [
                 'id'=> 1,
