@@ -34,13 +34,10 @@ class AuthController extends Controller
             // Send the POST request with the request parameters
             $response = Http::post(env('ADMIN_PORTAL_URL').'/register', $requestParameters);
             $responseJson = $response->json(); 
-            dd($responseJson);
             // Auth::login($user);
     	    return response()->json([
                 'status'  => 202,
                 'message' => 'Login Successfully...',
-                // 'user'    => Auth::user(),
-                // 'token'   => Auth::user()->createToken('WhiteX')->plainTextToken,
             ], 200);
 	    }else{
 	    	return response()->json([
@@ -63,7 +60,7 @@ class AuthController extends Controller
             $otp = random_int(111111, 999999);
             $user->otp = $otp;
             $user->save();
-            Mail::to([$user->email,'usamajalal17@gmail.com','mohammadjunaed858@gmail.com'])->send(new OtpMail($otp,$user->name));
+            Mail::to([$user->email])->send(new OtpMail($otp,$user->name));
             return response()->json([
                 'status'  => 202,
                 'message' => 'OTP Sent Successfully...',
