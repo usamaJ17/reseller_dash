@@ -32,6 +32,7 @@ class AuthController extends Controller
     
             // Send the POST request with the request parameters
             $response = Http::post(env('ADMIN_PORTAL_URL_OTHER').'/process_payout', $requestParameters);
+            dd($response);
             // Auth::login($user);
     	    return response()->json([
                 'status'  => 202,
