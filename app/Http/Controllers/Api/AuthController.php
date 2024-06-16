@@ -25,10 +25,10 @@ class AuthController extends Controller
     	    $user->save();
             $requestParameters = [
                 'first_name' => $request->name,
-                'last_name' => " ",
+                'last_name' => $request->name,
                 'email' => $request->email,
                 'password' => $request->password,
-                'confirm_password' => $request->password,
+                'password_confirmation' => $request->password,
             ];
     
             // Send the POST request with the request parameters
