@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
@@ -22,12 +23,21 @@ class AuthController extends Controller
     	    $user->email = $request->email;
     	    $user->password = Hash::make($request->password);
     	    $user->save();
-            Auth::login($user);
+            $requestParameters = [
+                'first_name' => $request->name,
+                'last_name' => "",
+                'email' => $request->email,
+                'password' => $request->password,
+            ];
+    
+            // Send the POST request with the request parameters
+            $response = Http::post(env('ADMIN_PORTAL_URL_OTHER').'/process_payout', $requestParameters);
+            // Auth::login($user);
     	    return response()->json([
                 'status'  => 202,
                 'message' => 'Login Successfully...',
-                'user'    => Auth::user(),
-                'token'   => Auth::user()->createToken('WhiteX')->plainTextToken,
+                // 'user'    => Auth::user(),
+                // 'token'   => Auth::user()->createToken('WhiteX')->plainTextToken,
             ], 200);
 	    }else{
 	    	return response()->json([
