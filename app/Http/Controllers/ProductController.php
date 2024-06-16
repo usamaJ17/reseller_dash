@@ -30,7 +30,7 @@ class ProductController extends Controller
         $response = Http::withToken(Auth::user()->jwt_token)
         ->get(env('ADMIN_PORTAL_URL').'/product-details'.'/'.$id);   
         $responseJson = $response->json(); 
-        dd($responseJson);
+        dd($responseJson['data']['price']);
         return response($responseJson);
     }
 }
