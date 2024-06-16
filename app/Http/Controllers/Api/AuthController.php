@@ -45,6 +45,33 @@ class AuthController extends Controller
 	    	   'message'=> 'Invalid Email OR Password...',
 	    	], 401);
         }else{
+            $otp = random_int(111111, 999999);
+            $user->otp = $otp;
+            $user->save();
+        	// Auth::login($user);
+            // return response()->json([
+            //     'status'  => 202,
+            //     'message' => 'Login Successfully...',
+            //     'user'    => Auth::user(),
+            //     'token'   => Auth::user()->createToken('WhiteX')->plainTextToken,
+            // ], 200);
+            return response()->json([
+                'status'  => 202,
+                'message' => 'OTP Sent Successfully...',
+                'email'    => $request->email,
+            ], 200);
+        }
+    }
+    public function otp(Request $request): JsonResponse
+    {
+    	$user = User::where('email',$request->email)->first();
+
+        if(!$user || $user->otp != $request->otp){
+        	return response()->json([
+	    	   'status' => 401,
+	    	   'message'=> 'Invalid OTP',
+	    	], 401);
+        }else{
         	Auth::login($user);
             return response()->json([
                 'status'  => 202,

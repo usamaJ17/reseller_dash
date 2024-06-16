@@ -24,6 +24,7 @@ use App\Http\Controllers\ProductController;
 
 Route::post('register',[AuthController::class,'register']);
 Route::post('login',[AuthController::class,'login'])->middleware('cros');
+Route::post('verify_otp',[AuthController::class,'otp'])->middleware('cros');
 
 Route::middleware(['auth:sanctum','cros','add.token'])->group(function () {
   Route::get('products',[ProductController::class,'getAll']);

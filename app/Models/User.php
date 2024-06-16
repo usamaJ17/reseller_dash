@@ -21,7 +21,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'jwt_token'
+        'jwt_token',
+        'otp'
     ];
 
     /**
