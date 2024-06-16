@@ -41,32 +41,6 @@ class CommissionController extends Controller
     public function getallPayout(){
         $response = Http::get('https://test.whitexdigital.com/api/get_payout/11');   
         $responseJson = $response->json();     
-        $order = [
-            [
-                'id'=> 1,
-                'amount_requested'=> 100,
-                'date'=> "12-5-1",
-                'status'=> "Processed",
-            ],
-            [
-                'id'=> 1,
-                'amount_requested'=> 100,
-                'date'=> "12-5-1",
-                'status'=> "Processed",
-            ],
-            [
-                'id'=> 1,
-                'amount_requested'=> 100,
-                'date'=> "12-5-1",
-                'status'=> "Processed",
-            ],
-            [
-                'id'=> 1,
-                'amount_requested'=> 100,
-                'date'=> "12-5-1",
-                'status'=> "Processed",
-            ]
-        ];
         $data = [
             'payouts'=>$responseJson,
             'total'=>500
