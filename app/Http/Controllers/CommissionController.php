@@ -68,7 +68,7 @@ class CommissionController extends Controller
             ]
         ];
         $data = [
-            'payouts'=>$order,
+            'payouts'=>$responseJson,
             'total'=>500
         ];
         return response()->json($data);
