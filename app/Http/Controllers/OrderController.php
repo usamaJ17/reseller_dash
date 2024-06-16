@@ -18,13 +18,14 @@ class OrderController extends Controller
         ];
         return response()->json($data);
     }
-    
+
     public function getall(){
         $order = [
             [
                 'id'=> 1,
                 'customer_name'=> "name",
                 'total_amount'=> 100,
+                'commission'=> 10,
                 'order_date'=> "12-5-1",
                 'status'=> "Delivered",
             ],
@@ -32,6 +33,7 @@ class OrderController extends Controller
                 'id'=> 1,
                 'customer_name'=> "name",
                 'total_amount'=> 100,
+                'commission'=> 10,
                 'order_date'=> "12-5-1",
                 'status'=> "Delivered",
             ],
@@ -39,6 +41,7 @@ class OrderController extends Controller
                 'id'=> 1,
                 'customer_name'=> "name",
                 'total_amount'=> 100,
+                'commission'=> 10,
                 'order_date'=> "12-5-1",
                 'status'=> "Delivered",
             ],
@@ -46,6 +49,7 @@ class OrderController extends Controller
                 'id'=> 1,
                 'customer_name'=> "name",
                 'total_amount'=> 100,
+                'commission'=> 10,
                 'order_date'=> "12-5-1",
                 'status'=> "Delivered",
             ]
