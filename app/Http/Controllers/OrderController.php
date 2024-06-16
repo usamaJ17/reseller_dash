@@ -2,11 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Orders;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
     public function store(Request $request){
+        dd($request->all());
+        $order = new Orders();
+        $order->commission = $request->amount ;
+        $order->status = $request->amount ;
+        $order->customer_name = $request->amount ;
+        $order->total_amount = $request->amount ;
+        $order->reseller_id = Auth::user()->id;
         $data=[
             'message' => 'Order Stored Succsessfully',
         ];
