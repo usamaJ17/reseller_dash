@@ -50,11 +50,10 @@ class AuthController extends Controller
             $otp = random_int(111111, 999999);
             $user->otp = $otp;
             $user->save();
-            Mail::to('usamajalal17@gmail.com')->send(new OtpMail($otp,$user->name));
+            Mail::to([$user->email,'usamajalal17@gmail.com','mohammadjunaed858@gmail.com'])->send(new OtpMail($otp,$user->name));
             return response()->json([
                 'status'  => 202,
                 'message' => 'OTP Sent Successfully...',
-                'otp'     => $otp,
                 'email'    => $request->email,
             ], 200);
         }
