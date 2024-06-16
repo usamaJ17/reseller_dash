@@ -17,7 +17,7 @@ class ClientController extends Controller
             'message' => 'Fetched Succsessfully',
             'data' => $client
         ];
-        return response($data);
+        return response($data)->json($data);
     }
 
     /**
