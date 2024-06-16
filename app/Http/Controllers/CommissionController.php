@@ -39,6 +39,8 @@ class CommissionController extends Controller
     }
 
     public function getallPayout(){
+        $response = Http::get(env('ADMIN_PORTAL_URL_OTHER').'/get_payout'.'/'.Auth::user()->id);   
+        $responseJson = $response->json();     
         $order = [
             [
                 'id'=> 1,
@@ -73,9 +75,18 @@ class CommissionController extends Controller
     }
 
     public function requestPayout(Request $request){
-        $data=[
-            'message' => 'Payout Requested Succsessfully',
+        $requestParameters = [
+            'reseller_name' => Auth::user()->id,
+            'reseller_id' => Auth::user()->name,
+            'amount' => $request->amount,
         ];
-        return response()->json($data);
+
+        // Send the POST request with the request parameters
+        $response = Http::post(env('ADMIN_PORTAL_URL_OTHER').'/process_payout', $requestParameters);
+
+        // Decode the response JSON
+        $responseJson = $response->json();
+
+        return response($responseJson);
     }
 }
