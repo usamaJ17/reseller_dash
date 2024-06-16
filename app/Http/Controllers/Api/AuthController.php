@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Mail\OtpMail;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -48,16 +50,11 @@ class AuthController extends Controller
             $otp = random_int(111111, 999999);
             $user->otp = $otp;
             $user->save();
-        	// Auth::login($user);
-            // return response()->json([
-            //     'status'  => 202,
-            //     'message' => 'Login Successfully...',
-            //     'user'    => Auth::user(),
-            //     'token'   => Auth::user()->createToken('WhiteX')->plainTextToken,
-            // ], 200);
+            Mail::to('usamajalal17@gmail.com')->send(new OtpMail($otp,$user->name));
             return response()->json([
                 'status'  => 202,
                 'message' => 'OTP Sent Successfully...',
+                'otp'     => $otp,
                 'email'    => $request->email,
             ], 200);
         }
