@@ -39,8 +39,8 @@ class CommissionController extends Controller
     }
 
     public function getallPayout(){
-        $response = Http::get(env('ADMIN_PORTAL_URL_OTHER').'/get_payout/11');   
-        $responseJson = $response->json();     
+        $response = Http::get('https://test.whitexdigital.com/api/get_payout/11');   
+        // $responseJson = $response->json();     
         $order = [
             [
                 'id'=> 1,
