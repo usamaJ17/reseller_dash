@@ -12,25 +12,25 @@ class CommissionController extends Controller
         $order = [
             [
                 'order_id'=> 1,
-                'sale_amount'=> "name",
+                'sale_amount'=> 10,
                 'commission_amount'=> 100,
                 'order_date'=> "12-5-1"
             ],
             [
                 'order_id'=> 1,
-                'sale_amount'=> "name",
+                'sale_amount'=> 10,
                 'commission_amount'=> 100,
                 'order_date'=> "12-5-1"
             ],
             [
                 'order_id'=> 1,
-                'sale_amount'=> "name",
+                'sale_amount'=> 10,
                 'commission_amount'=> 100,
                 'order_date'=> "12-5-1"
             ],
             [
                 'order_id'=> 1,
-                'sale_amount'=> "name",
+                'sale_amount'=> 10,
                 'commission_amount'=> 100,
                 'order_date'=> "12-5-1"
             ]
