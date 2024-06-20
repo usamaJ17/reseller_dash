@@ -23,7 +23,8 @@ use App\Http\Controllers\ProductController;
 //     return $request->user();
 // });
 
-Route::post('register',[AuthController::class,'register']);
+Route::post('register',[AuthController::class,'register'])->middleware('cros');
+Route::post('verify_register_otp',[AuthController::class,'registerOtp'])->middleware('cros');
 Route::post('login',[AuthController::class,'login'])->middleware('cros');
 Route::post('verify_otp',[AuthController::class,'otp'])->middleware('cros');
 

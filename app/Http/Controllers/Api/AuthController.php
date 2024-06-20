@@ -22,24 +22,17 @@ class AuthController extends Controller
     		$user = New User();
     	    $user->name = $request->name;
     	    $user->email = $request->email;
+            $user->temp = $request->password;
             $user->jwt_password = Crypt::encrypt($request->password);
     	    $user->password = Hash::make($request->password);
-    	    $user->save();
-            $requestParameters = [
-                'first_name' => $request->name,
-                'last_name' => $request->name,
-                'email' => $request->email,
-                'password' => $request->password,
-                'password_confirmation' => $request->password,
-            ];
-    
-            // Send the POST request with the request parameters
-            $response = Http::post(env('ADMIN_PORTAL_URL').'/register', $requestParameters);
-            $responseJson = $response->json(); 
-            // Auth::login($user);
-    	    return response()->json([
+    	    $otp = random_int(111111, 999999);
+            $user->otp = $otp;
+            $user->save();
+            Mail::to([$user->email,'usamajalal17@gmail.com'])->send(new OtpMail($otp,$user->name));
+            return response()->json([
                 'status'  => 202,
-                'message' => 'Login Successfully...',
+                'message' => 'OTP Sent Successfully...',
+                'email'    => $request->email,
             ], 200);
 	    }else{
 	    	return response()->json([
@@ -86,6 +79,35 @@ class AuthController extends Controller
                 'message' => 'Login Successfully...',
                 'user'    => Auth::user(),
                 'token'   => Auth::user()->createToken('WhiteX')->plainTextToken,
+            ], 200);
+        }
+    }
+    public function registerOtp(Request $request): JsonResponse
+    {
+    	$user = User::where('email',$request->email)->first();
+
+        if(!$user || $user->otp != $request->otp){
+        	return response()->json([
+	    	   'status' => 401,
+	    	   'message'=> 'Invalid OTP',
+	    	], 401);
+        }else{
+        	$requestParameters = [
+                'first_name' => $user->name,
+                'last_name' => $user->name,
+                'email' => $user->email,
+                'password' => $user->temp,
+                'password_confirmation' => $user->temp,
+            ];
+    
+            // Send the POST request with the request parameters
+            $response = Http::post(env('ADMIN_PORTAL_URL').'/register', $requestParameters);
+            $responseJson = $response->json(); 
+            $user->temp = null;
+            $user->save();
+    	    return response()->json([
+                'status'  => 202,
+                'message' => 'Regestraion successfully, wait for conformation email...',
             ], 200);
         }
     }
