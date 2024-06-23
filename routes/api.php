@@ -28,8 +28,8 @@ Route::middleware(['cros'])->group(function () {
   Route::post('verify_register_otp',[AuthController::class,'registerOtp']);
   Route::post('login',[AuthController::class,'login']);
   Route::post('verify_otp',[AuthController::class,'otp']);
-  Route::post('forgot_password',[AuthController::class,'SendForgotPassword']);
-  Route::post('forgot_password',[AuthController::class,'UpdateForgotPassword']);
+  Route::post('send_forgot_password',[AuthController::class,'SendForgotPassword']);
+  Route::post('update_forgot_password',[AuthController::class,'UpdateForgotPassword']);
 });
 
 
