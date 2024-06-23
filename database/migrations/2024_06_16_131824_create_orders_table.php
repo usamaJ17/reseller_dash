@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->integer('reseller_id')->nullable();
-            $table->text('status')->nullable();
-            $table->integer('customer_name')->nullable();
-            $table->integer('commission')->nullable();
-            $table->integer('total_amount')->nullable();
+            $table->string('status')->nullable();
+            $table->string('customer_name')->nullable();
+            $table->float('commission')->nullable();
+            $table->float('total_amount')->nullable();
             $table->timestamps();
         });
     }

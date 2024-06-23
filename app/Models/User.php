@@ -26,6 +26,9 @@ class User extends Authenticatable
         'jwt_password',
         'is_verified',
         'temp',
+        'forgot_password',
+        'contact',
+        'business'
     ];
 
     /**

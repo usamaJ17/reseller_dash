@@ -23,10 +23,15 @@ use App\Http\Controllers\ProductController;
 //     return $request->user();
 // });
 
-Route::post('register',[AuthController::class,'register'])->middleware('cros');
-Route::post('verify_register_otp',[AuthController::class,'registerOtp'])->middleware('cros');
-Route::post('login',[AuthController::class,'login'])->middleware('cros');
-Route::post('verify_otp',[AuthController::class,'otp'])->middleware('cros');
+Route::middleware(['cros'])->group(function () {
+  Route::post('register',[AuthController::class,'register']);
+  Route::post('verify_register_otp',[AuthController::class,'registerOtp']);
+  Route::post('login',[AuthController::class,'login']);
+  Route::post('verify_otp',[AuthController::class,'otp']);
+  Route::post('forgot_password',[AuthController::class,'SendForgotPassword']);
+  Route::post('forgot_password',[AuthController::class,'UpdateForgotPassword']);
+});
+
 
 Route::middleware(['auth:sanctum','cros','add.token'])->group(function () {
   Route::get('products',[ProductController::class,'getAll']);

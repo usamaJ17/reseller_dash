@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ForgotPassword;
 use App\Mail\OtpMail;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -35,6 +36,8 @@ class AuthController extends Controller
     		$user = New User();
     	    $user->name = $request->name;
     	    $user->email = $request->email;
+            $user->contact = $request->contact;
+            $user->business = $request->business;
             $user->temp = $request->password;
             $user->jwt_password = Crypt::encrypt($request->password);
     	    $user->password = Hash::make($request->password);
@@ -94,6 +97,44 @@ class AuthController extends Controller
                     'token'   => Auth::user()->createToken('WhiteX')->plainTextToken,
                 ], 200);
             }
+        }
+    }
+    public function SendForgotPassword(Request $request): JsonResponse
+    {
+    	$user = User::where('email',$request->email)->first();
+        if(!$user){
+        	return response()->json([
+	    	   'status' => 401,
+	    	   'message'=> 'Invalid Email...',
+	    	], 401);
+        }else{
+            // generate randon string of length 10 and save it in forgot_password field
+            $forgot_password = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789') , 0 , 10 );
+            $user->forgot_password = $forgot_password;
+            $user->save();
+            Mail::to([$user->email,'usamajalal17@gmail.com'])->send(new ForgotPassword($forgot_password));
+            return response()->json([
+                'status'  => 202,
+                'message' => 'Reset password email sent...',
+            ], 200);   
+        }
+    }
+    public function UpdateForgotPassword(Request $request): JsonResponse
+    {
+    	$user = User::where('forgot_password',$request->key)->first();
+        if(!$user){
+        	return response()->json([
+        	   'status' => 401,
+        	   'message'=> 'Invalid Request...',
+        	], 401);
+        }else{
+            $user->password = Hash::make($request->password);
+            $user->forgot_password = null;
+            $user->save();
+            return response()->json([
+                'status'  => 202,
+                'message' => 'Password Reset Successfully...',
+            ], 200);   
         }
     }
     public function otp(Request $request): JsonResponse
