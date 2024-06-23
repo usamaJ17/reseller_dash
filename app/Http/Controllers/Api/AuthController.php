@@ -128,6 +128,15 @@ class AuthController extends Controller
         	   'message'=> 'Invalid Request...',
         	], 401);
         }else{
+            $validator = Validator::make($request->all(), [
+                'password' => 'required|string|min:8',
+            ]);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status'  => 401,
+                    'message' => $validator->errors()->first(),
+                ], 401);
+            }
             $user->password = Hash::make($request->password);
             $user->forgot_password = null;
             $user->save();
