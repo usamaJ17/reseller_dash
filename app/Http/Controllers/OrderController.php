@@ -29,6 +29,7 @@ class OrderController extends Controller
         $order->customer_name = $client->name ;
         $order->total_amount = $price ;
         $order->reseller_id = Auth::user()->id;
+        $order->save();
         $data=[
             'message' => 'Order Stored Succsessfully',
         ];
