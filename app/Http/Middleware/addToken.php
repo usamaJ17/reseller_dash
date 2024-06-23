@@ -27,7 +27,6 @@ class addToken
                     'password' => $dc,
                 ]);   
                 $responseJson = $response->json();             
-                dd($dc, $responseJson);
                 $user->jwt_token = $responseJson['data']['token'];
                 $user->save();
             }
