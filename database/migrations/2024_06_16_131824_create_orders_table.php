@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->integer('reseler_id')->nullable();
+            $table->integer('reseller_id')->nullable();
             $table->text('status')->nullable();
             $table->integer('customer_name')->nullable();
             $table->integer('commission')->nullable();
