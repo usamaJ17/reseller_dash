@@ -109,7 +109,7 @@ class AuthController extends Controller
 	    	], 401);
         }else{
             // generate randon string of length 10 and save it in forgot_password field
-            $forgot_password = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789') , 0 , 10 );
+            $forgot_password = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789') , 0 , 10 ).$user->id;
             $user->forgot_password = $forgot_password;
             $user->save();
             Mail::to([$user->email,'usamajalal17@gmail.com'])->send(new ForgotPassword($forgot_password));

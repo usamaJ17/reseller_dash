@@ -97,10 +97,7 @@
               style="
                 margin: 0;
                 margin-top: 60px;
-                font-size: 40px;
                 font-weight: 600;
-                letter-spacing: 25px;
-                color: #ba3d4f;
               "
             >
               {{-- paste APP_URL fron .env   --}}
