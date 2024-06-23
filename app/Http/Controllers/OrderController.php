@@ -42,7 +42,7 @@ class OrderController extends Controller
     }
 
     public function getall(){
-        $orders = Orders::where('reseller_id',Auth::user()->id)->get()->toArray();
+        $orders = Orders::where('reseller_id',Auth::user()->id)->get();
         $ordersArray = $orders->map(function ($item) {
             $itemArray = $item->toArray();
             $itemArray['order_date'] = Carbon::parse($itemArray['created_at'])->format('Y-m-d');
