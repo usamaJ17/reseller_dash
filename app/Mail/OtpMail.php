@@ -15,13 +15,15 @@ class OtpMail extends Mailable
 
     public $otp;
     public $name;
+    public $register;
     /**
      * Create a new message instance.
      */
-    public function __construct($otp,$name)
+    public function __construct($otp,$name,$register=false)
     {
         $this->otp = $otp;
         $this->name = $name;
+        $this->register = $register;
     }
 
     /**

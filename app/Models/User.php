@@ -23,6 +23,8 @@ class User extends Authenticatable
         'password',
         'jwt_token',
         'otp',
+        'jwt_password',
+        'is_verified',
         'temp',
     ];
 
@@ -43,6 +45,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'otp_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
 }

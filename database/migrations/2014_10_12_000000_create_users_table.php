@@ -17,9 +17,12 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('temp')->nullable();
             $table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('otp_verified_at')->nullable();
             $table->string('password');
+            $table->string('otp')->nullable();
             $table->text('jwt_token')->nullable();
             $table->text('jwt_password')->nullable();
+            $table->boolean('is_verified')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });
