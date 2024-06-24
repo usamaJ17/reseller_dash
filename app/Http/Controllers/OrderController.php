@@ -47,6 +47,7 @@ class OrderController extends Controller
         $ordersArray = $orders->map(function ($item) {
             $itemArray = $item->toArray();
             $itemArray['order_date'] = Carbon::parse($itemArray['created_at'])->format('Y-m-d');
+            $itemArray['file'] = "https://test.whitexdigital.com/public/files/20240624210014_original_303.pdf";
             unset($itemArray['created_at']);
             return $itemArray;
         })->toArray();
