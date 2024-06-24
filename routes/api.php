@@ -28,9 +28,9 @@ Route::middleware(['cros'])->group(function () {
   Route::post('verify_register_otp',[AuthController::class,'registerOtp']);
   Route::post('login',[AuthController::class,'login']);
   Route::post('verify_otp',[AuthController::class,'otp']);
-  Route::post('send_forgot_password',[AuthController::class,'SendForgotPassword']);
-  Route::post('update_forgot_password',[AuthController::class,'UpdateForgotPassword']);
 });
+Route::post('send_forgot_password',[AuthController::class,'SendForgotPassword'])->middleware('cros');
+Route::post('update_forgot_password',[AuthController::class,'UpdateForgotPassword'])->middleware('cros');
 
 
 Route::middleware(['auth:sanctum','cros','add.token'])->group(function () {
