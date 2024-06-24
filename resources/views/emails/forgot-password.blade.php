@@ -71,7 +71,7 @@
                 color: #1f1f1f;
               "
             >
-              Your OTP
+              Password Reset Link
             </h1>
             <p
               style="

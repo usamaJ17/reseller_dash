@@ -161,6 +161,8 @@ class AuthController extends Controller
                     'first_name' => $user->name,
                     'last_name' => $user->name,
                     'email' => $user->email,
+                    'contact' => $user->contact,
+                    'business' => $user->business,
                     'password' => $user->temp,
                     'password_confirmation' => $user->temp,
                 ];
