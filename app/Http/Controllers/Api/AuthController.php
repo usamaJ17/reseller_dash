@@ -191,8 +191,9 @@ class AuthController extends Controller
         }
     }
     public function changeResellerStatus(Request $request){
-        $user = User::where('email',$request->email);
+        $user = User::where('email',$request->email)->first();
         $user->is_verified = $request->status;
+        $user->tokens()->delete();
         $user->save();
         return response()->json([
             'status'  => 202,
