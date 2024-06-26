@@ -28,6 +28,7 @@ Route::middleware(['cros'])->group(function () {
   Route::post('verify_register_otp',[AuthController::class,'registerOtp']);
   Route::post('login',[AuthController::class,'login']);
   Route::post('verify_otp',[AuthController::class,'otp']);
+  Route::get('all_payouts',[CommissionController::class,'AdminPayouts']);
 });
 Route::post('send_forgot_password',[AuthController::class,'SendForgotPassword'])->middleware('cros');
 Route::post('update_forgot_password',[AuthController::class,'UpdateForgotPassword'])->middleware('cros');
