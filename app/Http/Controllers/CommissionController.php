@@ -52,6 +52,7 @@ class CommissionController extends Controller
         $requestParameters = [
             'reseller_name' => Auth::user()->name,
             'reseller_id' => Auth::user()->id,
+            'reseller_email' => Auth::user()->email,
             'amount' => $request->amount,
         ];
 
