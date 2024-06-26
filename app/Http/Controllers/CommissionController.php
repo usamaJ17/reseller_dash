@@ -50,8 +50,8 @@ class CommissionController extends Controller
 
     public function requestPayout(Request $request){
         $requestParameters = [
-            'reseller_name' => Auth::user()->id,
-            'reseller_id' => Auth::user()->name,
+            'reseller_name' => Auth::user()->name,
+            'reseller_id' => Auth::user()->id,
             'amount' => $request->amount,
         ];
 
