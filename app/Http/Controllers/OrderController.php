@@ -13,6 +13,7 @@ class OrderController extends Controller
 {
     public function store(Request $request){
         $trx_id = null;
+        $response = null;
         foreach($request->products as $item){
             $requestParameters = [
                 'quantity' => $item['quantity'],
@@ -23,9 +24,22 @@ class OrderController extends Controller
             // Send the POST request with the request parameters
             $response = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_URL').'/cart-store', $requestParameters);
             // get trx_id from response
-            $trx_id = $response->json();
-            dd($trx_id['data']['trx_id']);
+            $trx_id = $response->json()['data']['trx_id'];
         }
+        $requestParameters = [
+            'trx_id' => $trx_id,
+            'shipping_address'=> [
+                'address_ids'
+                 =>
+                [
+                    "country_id"=>"251",
+                    "state_id"=>"2",
+                    "city_id"=>"2"
+                ]
+            ]
+        ];
+        $response = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_URL').'/cart-store', $requestParameters);
+        return response()->json($response->json(),500);
 
         
         $order = new Orders();
