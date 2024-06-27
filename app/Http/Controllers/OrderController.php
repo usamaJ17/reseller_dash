@@ -115,7 +115,7 @@ class OrderController extends Controller
             $itemArray['order_date'] = Carbon::parse($itemArray['created_at'])->format('Y-m-d');
             $response = Http::withToken(Auth::user()->jwt_token)
                 ->get(env('ADMIN_PORTAL_URL') . '/invoice-url' . '/' . $item['order_id']);
-            $itemArray['file'] = $response->json();
+            $itemArray['file'] = $response->json()['pdf_url'];
             unset($itemArray['created_at']);
             return $itemArray;
         })->toArray();
