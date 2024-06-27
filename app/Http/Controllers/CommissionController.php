@@ -39,7 +39,7 @@ class CommissionController extends Controller
     }
 
     public function getallPayout(){
-        $response = Http::get('https://test.whitexdigital.com/api/get_payout/'.Auth::user()->id);   
+        $response = Http::get(env('ADMIN_PORTAL_URL_OTHER').'/get_payout'.'/'.Auth::user()->id);   
         $responseJson = $response->json();     
         $data = [
             'payouts'=>$responseJson,
@@ -50,7 +50,7 @@ class CommissionController extends Controller
 
     public function requestPayout(Request $request){
         $requestParameters = [
-            'reseller_name' => Auth::user()->name,
+            'requested_by' => Auth::user()->name,
             'reseller_id' => Auth::user()->id,
             'reseller_email' => Auth::user()->email,
             'amount' => $request->amount,

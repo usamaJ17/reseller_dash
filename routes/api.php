@@ -49,3 +49,4 @@ Route::middleware(['auth:sanctum','cros','add.token'])->group(function () {
   Route::post('request_payouts',[CommissionController::class,'requestPayout']);
 });
 Route::post('change_reseller_status',[AuthController::class,'changeResellerStatus']);
+Route::post('change_payout_status',[CommissionController::class,'changePayoutStatus']);
