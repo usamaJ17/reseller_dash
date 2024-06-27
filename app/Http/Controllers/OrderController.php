@@ -61,6 +61,9 @@ class OrderController extends Controller
                     "state_id" => $client->state_id,
                     "city_id" => $client->city_id,
                 ],
+                "country" => "United States",
+                "state" => "new york",
+                "city" => "new york",
                 "postal_code" => $client->postal_code,
             ],
             'billing_address' => [
@@ -104,7 +107,9 @@ class OrderController extends Controller
         $ordersArray = $orders->map(function ($item) {
             $itemArray = $item->toArray();
             $itemArray['order_date'] = Carbon::parse($itemArray['created_at'])->format('Y-m-d');
-            $itemArray['file'] = "https://test.whitexdigital.com/public/files/20240624210014_original_303.pdf";
+            $response = Http::withToken(Auth::user()->jwt_token)
+                ->get(env('ADMIN_PORTAL_URL') . '/invoice-download' . '/' . $item['id']);
+            $itemArray['file'] = $response;
             unset($itemArray['created_at']);
             return $itemArray;
         })->toArray();
