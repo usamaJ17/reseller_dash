@@ -16,6 +16,7 @@ class OrderController extends Controller
             $requestParameters = [
                 'quantity' => $item['quantity'],
                 'product_id' => $item['id'],
+                'is_buy_now' => 0,
             ];
             // Send the POST request with the request parameters
             $response = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_URL').'/cart-store', $requestParameters);
