@@ -14,7 +14,7 @@ class OrderController extends Controller
     public function store(Request $request){
         foreach($request->products as $item){
             $requestParameters = [
-                'quantity' => $item['quantity'],
+                'p' => $item['quantity'],
                 'product_id' => $item['id'],
             ];
             // Send the POST request with the request parameters
