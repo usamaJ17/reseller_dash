@@ -84,13 +84,14 @@ class OrderController extends Controller
             ]
         ];
         $response = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_URL') . '/confirm-order', $requestParameters);
-        return $response->json();
+        $order_id = $response->json()['data']['id'];
         // store locally        
         $order = new Orders();
         $order->commission = $commission;
         $order->status = "Processing";
         $order->customer_name = $client->name;
         $order->total_amount = $custom_price;
+        $order->order_id = $order_id;
         $order->reseller_id = Auth::user()->id;
         $order->save();
         $data = [
@@ -113,7 +114,7 @@ class OrderController extends Controller
             $itemArray = $item->toArray();
             $itemArray['order_date'] = Carbon::parse($itemArray['created_at'])->format('Y-m-d');
             $response = Http::withToken(Auth::user()->jwt_token)
-                ->get(env('ADMIN_PORTAL_URL') . '/invoice-url' . '/' . $item['id']);
+                ->get(env('ADMIN_PORTAL_URL') . '/invoice-url' . '/' . $item['order_id']);
             $itemArray['file'] = $response->json();
             unset($itemArray['created_at']);
             return $itemArray;
