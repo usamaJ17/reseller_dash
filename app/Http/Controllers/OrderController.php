@@ -38,8 +38,8 @@ class OrderController extends Controller
                 ->get(env('ADMIN_PORTAL_URL') . '/product-details' . '/' . $item['id']);
             $responseJson = $response->json();
             $p_price = (int)$responseJson['data']['price'];
-            $commission += ($item['custom_price'] - $p_price);
-            $price += $p_price;
+            $commission = $commission  + ($item['custom_price'] - $p_price);
+            $price = $price + $p_price;
         }
         $requestParameters = [
             "payment_type" => 0,
