@@ -39,7 +39,7 @@ class CommissionController extends Controller
     }
 
     public function getallPayout(){
-        $response = Http::get('https://test.whitexdigital.com/api/get_payout/11');   
+        $response = Http::get('https://test.whitexdigital.com/api/get_payout/'.Auth::user()->id);   
         $responseJson = $response->json();     
         $data = [
             'payouts'=>$responseJson,
