@@ -23,7 +23,7 @@ class OrderController extends Controller
             // Send the POST request with the request parameters
             $response = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_URL').'/cart-store', $requestParameters);
             // get trx_id from response
-            $trx_id = $response->json()->$trx_id;
+            $trx_id = $response->json();
             dd($trx_id);
         }
 
