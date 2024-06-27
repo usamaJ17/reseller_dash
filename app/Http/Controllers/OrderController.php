@@ -12,15 +12,19 @@ use Illuminate\Support\Facades\Http;
 class OrderController extends Controller
 {
     public function store(Request $request){
+        $trx_id = null;
         foreach($request->products as $item){
             $requestParameters = [
                 'quantity' => $item['quantity'],
                 'product_id' => $item['id'],
                 'is_buy_now' => 0,
+                'trx_id' => $trx_id,
             ];
             // Send the POST request with the request parameters
             $response = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_URL').'/cart-store', $requestParameters);
-            return response()->json($response->json(),500);
+            // get trx_id from response
+            $trx_id = $response->json()['trx_id'];
+            dd($trx_id);
         }
 
         
