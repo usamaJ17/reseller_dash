@@ -12,6 +12,17 @@ use Illuminate\Support\Facades\Http;
 class OrderController extends Controller
 {
     public function store(Request $request){
+        foreach($request->products as $item){
+            $requestParameters = [
+                'quantity' => $item['quantity'],
+                'product_id' => $item['id'],
+            ];
+            // Send the POST request with the request parameters
+            $response = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_URL_OTHER').'/cart-store', $requestParameters);
+            dd($response->json());
+        }
+
+        
         $order = new Orders();
         $client = Client::find($request->clientID);
         $price = 0;
