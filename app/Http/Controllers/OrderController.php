@@ -84,6 +84,13 @@ class OrderController extends Controller
             ]
         ];
         $response = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_URL') . '/confirm-order', $requestParameters);
+        $data = [
+            'message' => 'Order Stored Succsessfully',
+            'response' => $response->json(),
+            'response_1' => $response_1->json(),
+            
+        ];
+        return response()->json($data,500);
         $order_id = $response->json()['data'][0]['id'];
         // store locally        
         $order = new Orders();
