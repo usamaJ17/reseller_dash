@@ -29,6 +29,7 @@ class OrderController extends Controller
             }
             $trx_id = $response_1->json()['data']['trx_id'];
         }
+        $client = Client::find($request->clientID);
         $requestParameters = [
             'trx_id' => $trx_id,
             'client_id' => $request->clientID,

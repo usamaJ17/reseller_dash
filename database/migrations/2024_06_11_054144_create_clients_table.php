@@ -17,6 +17,10 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('contact')->nullable();
             $table->integer('reseller_id')->nullable();
+            $table->integer('postal_code')->nullable();
+            $table->integer('city_id')->nullable();
+            $table->integer('state_id')->nullable();
+            $table->integer('country_id')->nullable();
             $table->text('address')->nullable();
             $table->timestamps();
         });
