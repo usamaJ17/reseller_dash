@@ -11,10 +11,11 @@ use Illuminate\Support\Facades\Http;
 
 class OrderController extends Controller
 {
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $trx_id = null;
         $response_1 = null;
-        foreach($request->products as $item){
+        foreach ($request->products as $item) {
             $requestParameters = [
                 'quantity' => $item['quantity'],
                 'product_id' => $item['id'],
@@ -23,60 +24,83 @@ class OrderController extends Controller
                 'trx_id' => $trx_id,
             ];
             // Send the POST request with the request parameters
-            $response_1 = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_URL').'/cart-store', $requestParameters);
-            if(!$response_1->json()['data']){
-                return response()->json($response_1->json(),500);
+            $response_1 = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_URL') . '/cart-store', $requestParameters);
+            if (!$response_1->json()['data']) {
+                return response()->json($response_1->json(), 500);
             }
             $trx_id = $response_1->json()['data']['trx_id'];
         }
         $client = Client::find($request->clientID);
-        $requestParameters = [
-            'trx_id' => $trx_id,
-            'client_id' => $request->clientID,
-            'shipping_address'=> [
-                'address_ids'
-                 =>
-                [
-                    "country_id"=>"251",
-                    "state_id"=>"2",
-                    "city_id"=>"2"
-                ]
-            ]
-        ];
-        Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_URL').'/confirm-order', $requestParameters);
-        // store locally        
-        $order = new Orders();
-        $client = Client::find($request->clientID);
         $price = 0;
-        $commission = 0; 
-        foreach($request->products as $item){
+        $commission = 0;
+        foreach ($request->products as $item) {
             $response = Http::withToken(Auth::user()->jwt_token)
-            ->get(env('ADMIN_PORTAL_URL').'/product-details'.'/'.$item['id']);   
-            $responseJson = $response->json(); 
+                ->get(env('ADMIN_PORTAL_URL') . '/product-details' . '/' . $item['id']);
+            $responseJson = $response->json();
             $p_price = (int)$responseJson['data']['price'];
             $commission += ($item['custom_price'] - $p_price);
             $price += $p_price;
         }
-        $order->commission = $commission ;
-        $order->status = "Processing" ;
-        $order->customer_name = $client->name ;
-        $order->total_amount = $price ;
+        $requestParameters = [
+            "payment_type" => 0,
+            "sub_total" => $price,
+            "discount_offer" => 0,
+            "shipping_tax" => 0,
+            "tax" => 0,
+            "coupon_discount" => 0,
+            "total" => $price,
+            'trx_id' => $trx_id,
+            'client_id' => $request->clientID,
+            'shipping_address' => [
+                "name" => $client->name,
+                "email" => $client->email,
+                "phone_no" => $client->contact,
+                "address" => $client->address,
+                "address_ids" => [
+                    "country_id" => $client->country_id,
+                    "state_id" => $client->state_id,
+                    "city_id" => $client->city_id,
+                ],
+                "postal_code" => $client->postal_code,
+            ],
+            'billing_address' => [
+                "name" => $client->name,
+                "email" => $client->email,
+                "phone_no" => $client->contact,
+                "address" => $client->address,
+                "address_ids" => [
+                    "country_id" => $client->country_id,
+                    "state_id" => $client->state_id,
+                    "city_id" => $client->city_id,
+                ],
+                "postal_code" => $client->postal_code,
+            ]
+        ];
+        Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_URL') . '/confirm-order', $requestParameters);
+        // store locally        
+        $order = new Orders();
+        $order->commission = $commission;
+        $order->status = "Processing";
+        $order->customer_name = $client->name;
+        $order->total_amount = $price;
         $order->reseller_id = Auth::user()->id;
         $order->save();
-        $data=[
+        $data = [
             'message' => 'Order Stored Succsessfully',
         ];
         return response()->json($data);
     }
-    public function requestAction(Request $request){
-        $data=[
+    public function requestAction(Request $request)
+    {
+        $data = [
             'message' => 'Request Sent Succsessfully',
         ];
         return response()->json($data);
     }
 
-    public function getall(){
-        $orders = Orders::where('reseller_id',Auth::user()->id)->get();
+    public function getall()
+    {
+        $orders = Orders::where('reseller_id', Auth::user()->id)->get();
         $ordersArray = $orders->map(function ($item) {
             $itemArray = $item->toArray();
             $itemArray['order_date'] = Carbon::parse($itemArray['created_at'])->format('Y-m-d');
