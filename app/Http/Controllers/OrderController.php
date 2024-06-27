@@ -32,14 +32,18 @@ class OrderController extends Controller
         }
         $client = Client::find($request->clientID);
         $price = 0;
+        $custom_price = 0;
         $commission = 0;
         foreach ($request->products as $item) {
             $response = Http::withToken(Auth::user()->jwt_token)
                 ->get(env('ADMIN_PORTAL_URL') . '/product-details' . '/' . $item['id']);
             $responseJson = $response->json();
             $p_price = (int)$responseJson['data']['price'];
-            $commission = $commission  + ($item['custom_price'] - $p_price);
-            $price = $price + $p_price;
+            $commission = $commission  + (($item['custom_price'] - $p_price) * $item['quantity']);
+            $total = $p_price * $item['quantity']; 
+            $custom_total = $item['custom_price'] * $item['quantity'];
+            $price = $price + $total;
+            $custom_price = $custom_price + $custom_total;
         }
         $requestParameters = [
             "payment_type" => 0,
@@ -86,7 +90,7 @@ class OrderController extends Controller
         $order->commission = $commission;
         $order->status = "Processing";
         $order->customer_name = $client->name;
-        $order->total_amount = $price;
+        $order->total_amount = $custom_price;
         $order->reseller_id = Auth::user()->id;
         $order->save();
         $data = [
