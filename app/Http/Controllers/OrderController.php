@@ -24,7 +24,7 @@ class OrderController extends Controller
             $response = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_URL').'/cart-store', $requestParameters);
             // get trx_id from response
             $trx_id = $response->json();
-            dd($trx_id);
+            dd($trx_id['data']['trx_id']);
         }
 
         
