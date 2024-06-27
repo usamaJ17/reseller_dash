@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Http;
 class OrderController extends Controller
 {
     public function store(Request $request){
+        dd($request->all());
         $order = new Orders();
         $client = Client::find($request->clientID);
         $price = 0;
