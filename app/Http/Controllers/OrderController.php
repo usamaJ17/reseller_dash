@@ -18,6 +18,7 @@ class OrderController extends Controller
             $requestParameters = [
                 'quantity' => $item['quantity'],
                 'product_id' => $item['id'],
+                'custom_price' => $item['custom_price'],
                 'is_buy_now' => 0,
                 'trx_id' => $trx_id,
             ];
@@ -38,13 +39,7 @@ class OrderController extends Controller
                 ]
             ]
         ];
-        $response = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_URL').'/confirm-order', $requestParameters);
-        $data = [
-            'message' => 'Order Stored Succsessfully',
-            'data' => $response->json(),
-            'old' => $response_1->json()
-        ];
-        return response()->json($data,500);
+        Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_URL').'/confirm-order', $requestParameters);
 
         
         $order = new Orders();
