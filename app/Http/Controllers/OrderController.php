@@ -24,8 +24,6 @@ class OrderController extends Controller
             ];
             // Send the POST request with the request parameters
             $response_1 = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_URL').'/cart-store', $requestParameters);
-            // get trx_id from response_1
-            return $response_1;
             $trx_id = $response_1->json()['data']['trx_id'];
         }
         $requestParameters = [
@@ -41,7 +39,7 @@ class OrderController extends Controller
             ]
         ];
         Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_URL').'/confirm-order', $requestParameters);
-
+        dd("asd");
         
         $order = new Orders();
         $client = Client::find($request->clientID);
