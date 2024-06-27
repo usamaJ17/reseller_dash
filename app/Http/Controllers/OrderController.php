@@ -19,7 +19,7 @@ class OrderController extends Controller
             ];
             // Send the POST request with the request parameters
             $response = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_URL').'/cart-store', $requestParameters);
-            dd($response->json());
+            return $response->json();
         }
 
         
