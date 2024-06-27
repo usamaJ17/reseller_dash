@@ -38,7 +38,7 @@ class OrderController extends Controller
                 ]
             ]
         ];
-        $response = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_URL').'/cart-store', $requestParameters);
+        $response = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_URL').'/confirm-order', $requestParameters);
         $data = [
             'message' => 'Order Stored Succsessfully',
             'data' => $response->json(),
