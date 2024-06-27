@@ -31,6 +31,7 @@ class OrderController extends Controller
         }
         $requestParameters = [
             'trx_id' => $trx_id,
+            'client_id' => $request->clientID,
             'shipping_address'=> [
                 'address_ids'
                  =>
@@ -41,14 +42,8 @@ class OrderController extends Controller
                 ]
             ]
         ];
-        $response = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_URL').'/confirm-order', $requestParameters);
-        $data=[
-            'message' => 'Order Stored Succsessfully',
-            'response' => $response_1->json(),
-            'response2' => $response->json()
-        ];
-        return response()->json($data,500);
-        
+        Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_URL').'/confirm-order', $requestParameters);
+        // store locally        
         $order = new Orders();
         $client = Client::find($request->clientID);
         $price = 0;
