@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => ['*','http://turbo-engine-p9pjr554xw4h6q64-3000.app.github.dev','https://turbo-engine-p9pjr554xw4h6q64-3000.app.github.dev','turbo-engine-p9pjr554xw4h6q64-3000.app.github.dev'],
 
     'allowed_origins_patterns' => [],
 
