@@ -52,4 +52,4 @@ Route::middleware(['auth:sanctum','cros','add.token'])->group(function () {
   Route::get('states/{id}',[HelperController::class,'getStates']);
   Route::get('cities/{id}',[HelperController::class,'getCities']);
 });
-Route::post('change_reseller_status',[AuthController::class,'changeResellerStatus']);
+Route::post('change_reseller_status',[AuthController::class,'changeResellerStatus'])->middleware('cros');
