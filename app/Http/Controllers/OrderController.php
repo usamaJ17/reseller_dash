@@ -108,9 +108,10 @@ class OrderController extends Controller
     }
     public function requestAction(Request $request)
     {
-        $data = [
-            'message' => 'Request Sent Succsessfully',
+        $requestParameters = [
+            'order_id' => ,
         ];
+        $response = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_URL') . '/confirm-order', $requestParameters);
         return response()->json($data);
     }
 

@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\HelperController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CommissionController;
 use App\Http\Controllers\OrderController;
@@ -47,5 +48,8 @@ Route::middleware(['auth:sanctum','cros','add.token'])->group(function () {
   Route::get('commissions',[CommissionController::class,'getall']);
   Route::get('payouts',[CommissionController::class,'getallPayout']);
   Route::post('request_payouts',[CommissionController::class,'requestPayout']);
+  Route::get('countries',[HelperController::class,'getCountries']);
+  Route::get('states/{id}',[HelperController::class,'getStates']);
+  Route::get('cities/{id}',[HelperController::class,'getCities']);
 });
 Route::post('change_reseller_status',[AuthController::class,'changeResellerStatus']);
