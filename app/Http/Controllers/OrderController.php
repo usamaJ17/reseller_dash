@@ -108,11 +108,11 @@ class OrderController extends Controller
     }
     public function requestAction(Request $request)
     {
-        $requestParameters = [
-            'order_id' => ,
-        ];
-        $response = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_URL') . '/confirm-order', $requestParameters);
-        return response()->json($data);
+        // $requestParameters = [
+        //     'order_id' => ,
+        // ];
+        // $response = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_URL') . '/confirm-order', $requestParameters);
+        return response()->json(true);
     }
 
     public function getall()
