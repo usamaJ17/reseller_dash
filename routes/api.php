@@ -36,6 +36,8 @@ Route::post('update_forgot_password',[AuthController::class,'UpdateForgotPasswor
 
 
 Route::middleware(['auth:sanctum','cros','add.token'])->group(function () {
+  Route::post('update_profile',[AuthController::class,'updateProfile']);
+  Route::post('update_password',[AuthController::class,'updatePassword']);
   Route::get('products',[ProductController::class,'getAll']);
   Route::get('product_detail/{id}',[ProductController::class,'getDetails']);
   Route::get('product_by_category/{id}',[ProductController::class,'getProductByCategory']);

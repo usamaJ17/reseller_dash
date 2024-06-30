@@ -57,6 +57,41 @@ class AuthController extends Controller
 	    	],401);
 	    }
 	}
+    public function updateProfile(Request $request){
+        $user = Auth::user();
+        $user->name = $request->name;
+        $user->contact = $request->contact;
+        $user->business = $request->business;
+        $user->save();
+        return response()->json([
+            'status'  => 202,
+            'message' => 'Profile Updated Successfully...',
+        ], 200);
+    }
+    public function updatePassword(Request $request){
+        $user = Auth::user();
+        if(!Hash::check($request->old_password,$user->password)){
+            return response()->json([
+                'status'  => 401,
+                'message' => 'Old Password is incorrect...',
+            ], 401);
+        }
+        $validator = Validator::make($request->all(), [
+            'password' => 'required|string|min:8',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'status'  => 401,
+                'message' => $validator->errors()->first(),
+            ], 401);
+        }
+        $user->password = Hash::make($request->password);
+        $user->save();
+        return response()->json([
+            'status'  => 202,
+            'message' => 'Password Updated Successfully...',
+        ], 200);
+    }
 	   
     public function login(Request $request): JsonResponse
     {
