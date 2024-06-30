@@ -15,21 +15,21 @@ class OrderController extends Controller
     {
         $trx_id = null;
         $response_1 = null;
-        foreach ($request->products as $item) {
-            $requestParameters = [
-                'quantity' => $item['quantity'],
-                'product_id' => $item['id'],
-                'custom_price' => $item['custom_price'],
-                'is_buy_now' => 0,
-                'trx_id' => $trx_id,
-            ];
-            // Send the POST request with the request parameters
-            $response_1 = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_URL') . '/cart-store', $requestParameters);
-            if (!$response_1->json()['data']) {
-                return response()->json($response_1->json(), 500);
-            }
-            $trx_id = $response_1->json()['data']['trx_id'];
-        }
+        // foreach ($request->products as $item) {
+        //     $requestParameters = [
+        //         'quantity' => $item['quantity'],
+        //         'product_id' => $item['id'],
+        //         'custom_price' => $item['custom_price'],
+        //         'is_buy_now' => 0,
+        //         'trx_id' => $trx_id,
+        //     ];
+        //     // Send the POST request with the request parameters
+        //     $response_1 = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_URL') . '/cart-store', $requestParameters);
+        //     if (!$response_1->json()['data']) {
+        //         return response()->json($response_1->json(), 500);
+        //     }
+        //     $trx_id = $response_1->json()['data']['trx_id'];
+        // }
         $client = Client::find($request->clientID);
         $price = 0;
         $custom_price = 0;
@@ -45,60 +45,60 @@ class OrderController extends Controller
             $price = $price + $total;
             $custom_price = $custom_price + $custom_total;
         }
-        $requestParameters = [
-            "payment_type" => 0,
-            "sub_total" => $price,
-            "discount_offer" => 0,
-            "shipping_tax" => 0,
-            "tax" => 0,
-            "coupon_discount" => 0,
-            "total" => $price,
-            'trx_id' => $trx_id,
-            'client_id' => $request->clientID,
-            'shipping_address' => [
-                "name" => $client->name,
-                "email" => $client->email,
-                "phone_no" => $client->contact,
-                "address" => $client->address,
-                "address_ids" => [
-                    "country_id" => $client->country_id,
-                    "state_id" => $client->state_id,
-                    "city_id" => $client->city_id,
-                ],
-                "country" => "United States",
-                "state" => "new york",
-                "city" => "new york",
-                "postal_code" => $client->postal_code,
-            ],
-            'billing_address' => [
-                "name" => $client->name,
-                "email" => $client->email,
-                "phone_no" => $client->contact,
-                "address" => $client->address,
-                "address_ids" => [
-                    "country_id" => $client->country_id,
-                    "state_id" => $client->state_id,
-                    "city_id" => $client->city_id,
-                ],
-                "postal_code" => $client->postal_code,
-            ]
-        ];
-        $response = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_URL') . '/confirm-order', $requestParameters);
-        $data = [
-            'message' => 'Order Stored Succsessfully',
-            'response' => $response->json(),
-            'response_1' => $response_1->json(),
+        // $requestParameters = [
+        //     "payment_type" => 0,
+        //     "sub_total" => $price,
+        //     "discount_offer" => 0,
+        //     "shipping_tax" => 0,
+        //     "tax" => 0,
+        //     "coupon_discount" => 0,
+        //     "total" => $price,
+        //     'trx_id' => $trx_id,
+        //     'client_id' => $request->clientID,
+        //     'shipping_address' => [
+        //         "name" => $client->name,
+        //         "email" => $client->email,
+        //         "phone_no" => $client->contact,
+        //         "address" => $client->address,
+        //         "address_ids" => [
+        //             "country_id" => $client->country_id,
+        //             "state_id" => $client->state_id,
+        //             "city_id" => $client->city_id,
+        //         ],
+        //         "country" => "United States",
+        //         "state" => "new york",
+        //         "city" => "new york",
+        //         "postal_code" => $client->postal_code,
+        //     ],
+        //     'billing_address' => [
+        //         "name" => $client->name,
+        //         "email" => $client->email,
+        //         "phone_no" => $client->contact,
+        //         "address" => $client->address,
+        //         "address_ids" => [
+        //             "country_id" => $client->country_id,
+        //             "state_id" => $client->state_id,
+        //             "city_id" => $client->city_id,
+        //         ],
+        //         "postal_code" => $client->postal_code,
+        //     ]
+        // ];
+        // $response = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_URL') . '/confirm-order', $requestParameters);
+        // $data = [
+        //     'message' => 'Order Stored Succsessfully',
+        //     'response' => $response->json(),
+        //     'response_1' => $response_1->json(),
             
-        ];
-        return response()->json($data,500);
-        $order_id = $response->json()['data'][0]['id'];
+        // ];
+        // return response()->json($data,500);
+        // $order_id = $response->json()['data'][0]['id'];
         // store locally        
         $order = new Orders();
         $order->commission = $commission;
         $order->status = "Processing";
         $order->customer_name = $client->name;
         $order->total_amount = $custom_price;
-        $order->order_id = $order_id;
+        // $order->order_id = $order_id;
         $order->reseller_id = Auth::user()->id;
         $order->save();
         $data = [
