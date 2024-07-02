@@ -62,7 +62,11 @@ class CommissionController extends Controller
 
         // Decode the response JSON
         $responseJson = $response->json();
+        $data = [
+            'payouts'=>$responseJson,
+            'new'=>$response
+        ];
 
-        return response($responseJson);
+        return response($data , 200);
     }
 }
