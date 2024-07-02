@@ -49,12 +49,16 @@ class CommissionController extends Controller
     }
 
     public function requestPayout(Request $request){
+        preg_match('/\d+(\.\d+)?/', $request->amount, $matches);
+
+        // Convert the extracted value to a float
+        $amount = isset($matches[0]) ? (float) $matches[0] : 0.0;
         $requestParameters = [
             'requested_by' => Auth::user()->name,
             'reseller_id' => Auth::user()->id,
             'reseller_email' => Auth::user()->email,
             'message' => $request->note,
-            'amount' => $request->amount,
+            'amount' => $amount,
         ];
 
         // Send the POST request with the request parameters
