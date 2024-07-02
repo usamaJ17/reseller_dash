@@ -53,6 +53,7 @@ class CommissionController extends Controller
             'requested_by' => Auth::user()->name,
             'reseller_id' => Auth::user()->id,
             'reseller_email' => Auth::user()->email,
+            'message' => $request->note,
             'amount' => $request->amount,
         ];
 
