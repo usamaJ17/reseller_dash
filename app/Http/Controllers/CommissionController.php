@@ -61,10 +61,9 @@ class CommissionController extends Controller
         // $response = Http::post(env('ADMIN_PORTAL_URL_OTHER').'/process_payout', $requestParameters);
         $response = Http::post('https://test.whitexdigital.com/api/process_payout', $requestParameters);
 
-        dd($response->body(), $response);
 
         // Decode the response JSON
-        $responseJson = $response->json();
+        $responseJson = $response->body();
         $data = [
             'payouts'=>$responseJson,
             'new'=>$response
