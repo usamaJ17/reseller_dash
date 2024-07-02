@@ -65,6 +65,6 @@ class CommissionController extends Controller
         // Decode the response JSON
         $responseJson = $response->body();
 
-        return response($$responseJson , 200);
+        return response($responseJson , 200);
     }
 }
