@@ -32,6 +32,35 @@ class ProductController extends Controller
         $response = Http::withToken(Auth::user()->jwt_token)
         ->get(env('ADMIN_PORTAL_WEB').'/home/product-details'.'/'.$id);  
         $responseJson = $response->json(); 
-        return response($responseJson);
+        $rating = 0;
+        $total = 0;
+        foreach ($responseJson['product']['reviews'] as $item){
+            $rating += $item['rating'];
+            $total++;
+        }
+        if($total > 0){
+            $rating = $rating/$total;
+        }
+        $details = [
+            "id" => $responseJson['product']['id'],
+            "slug" => $responseJson['product']['slug'],
+            "name" => $responseJson['product']['product_name'],
+            "price" => $responseJson['product']['price'],
+            "wholesale_price" => $responseJson['product']['wholesale_price'],
+            "special_discount" => $responseJson['product']['special_discount'],
+            "special_discount_type" => $responseJson['product']['special_discount_type'],
+            "special_discount_start" => $responseJson['product']['special_discount_start'],
+            "special_discount_end" => $responseJson['product']['special_discount_end'],
+            "short_description" => $responseJson['product']['short_description'],
+            "long_description" => $responseJson['product']['language_product']['description'],
+            "gallery" => $responseJson['product']['gallery'],
+            "current_stock" => $responseJson['product']['current_stock'],
+            "minimum_order_quantity" => $responseJson['product']['minimum_order_quantity'],
+            "shipping_fee" => $responseJson['product']['shipping_fee'],
+            "category_name" => $responseJson['product']['category_title'],
+            "rating" => $rating,
+            "total_reviews" => $total,
+        ];
+        return response($details);
     }
 }
