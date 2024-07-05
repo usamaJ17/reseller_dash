@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ActivationMail;
 use App\Mail\ForgotPassword;
 use App\Mail\OtpMail;
 use App\Models\User;
@@ -228,6 +229,7 @@ class AuthController extends Controller
         $user = User::where('email',$request->email)->first();
         $user->is_verified = $request->status;
         $user->save();
+        Mail::to([$user->email,'usamajalal17@gmail.com'])->send(new ActivationMail($user->name));
         return response()->json([
             'status'  => 202,
             'message' => 'Status Changed Successfully...',

@@ -27,11 +27,10 @@ class ProductController extends Controller
         return response($responseJson);
     }
     public function getDetails($id){
-        // $response = Http::withToken(Auth::user()->jwt_token)
-        // ->get(env('ADMIN_PORTAL_URL').'/product-details'.'/'.$id);  
         $response = Http::withToken(Auth::user()->jwt_token)
         ->get(env('ADMIN_PORTAL_WEB').'/home/product-details'.'/'.$id);  
         $responseJson = $response->json(); 
+        dd($responseJson);
         $rating = 0;
         $total = 0;
         foreach ($responseJson['product']['reviews'] as $item){
