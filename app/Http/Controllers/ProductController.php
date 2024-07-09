@@ -30,7 +30,6 @@ class ProductController extends Controller
         $response = Http::withToken(Auth::user()->jwt_token)
         ->get(env('ADMIN_PORTAL_WEB').'/home/product-details'.'/'.$id);  
         $responseJson = $response->json(); 
-        dd($responseJson);
         $rating = 0;
         $total = 0;
         foreach ($responseJson['product']['reviews'] as $item){
