@@ -30,6 +30,7 @@ class ProductController extends Controller
         $response = Http::withToken(Auth::user()->jwt_token)
         ->get(env('ADMIN_PORTAL_WEB').'/home/product-details'.'/'.$id);  
         $responseJson = $response->json(); 
+        dd($responseJson);
         $rating = 0;
         $total = 0;
         foreach ($responseJson['product']['reviews'] as $item){
@@ -72,7 +73,8 @@ class ProductController extends Controller
                 "name" => $item['name'],
                 "sku" => $item['sku'],
                 "current_stock" => $item['current_stock'],
-                "price" => $item['price'],
+                "wholesale_price" => $item['price'],
+                "suggested_retail_price" => $item['wholesale_price'],
                 "image" => $item['stock_image'],
             ];
             $variations[] = $data;
