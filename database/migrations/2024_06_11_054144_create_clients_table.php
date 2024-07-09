@@ -16,6 +16,9 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('email')->nullable();
             $table->string('contact')->nullable();
+            $table->string('country_name')->nullable();
+            $table->string('state_name')->nullable();
+            $table->string('city_name')->nullable();
             $table->integer('reseller_id')->nullable();
             $table->integer('postal_code')->nullable();
             $table->integer('city_id')->nullable();

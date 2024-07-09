@@ -17,6 +17,9 @@ class Client extends Model
         'city_id',
         'postal_code',
         'address',
-        'reseller_id'
+        'reseller_id',
+        'country_name',
+        'state_name',
+        'city_name',
     ];
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use GuzzleHttp\Client;
 
 class HelperController extends Controller
 {
@@ -41,5 +42,17 @@ class HelperController extends Controller
             ];
         }
         return response()->json($countries);
+    }
+    public function getPortalId(Request $request){
+        $client = new Client();
+        $response = $client->request('GET', env('ADMIN_PORTAL_URL') . '/reseller_portal_id', [
+            'query' => [
+                'token' => Auth::user()->jwt_token
+            ]
+        ]);
+        $data = json_decode($response->getBody(), true);
+
+        // Return the data or handle it as needed
+        return response()->json($data['id']);
     }
 }

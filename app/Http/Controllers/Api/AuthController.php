@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\ActivationMail;
 use App\Mail\ForgotPassword;
 use App\Mail\OtpMail;
+use App\Models\PayoutMethod;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -241,6 +242,32 @@ class AuthController extends Controller
         return response()->json([
            'status' => 200,
            'message'=> 'Logout Successfully...',
+        ], 200);
+    }
+    public function savePayoutMethord(Request $request){
+        $user = Auth::user();
+        $payout = PayoutMethod::where('user_id',Auth::user()->id)->first();
+        if($payout){
+            // update payout
+            $payout->update($request->all());
+        }else{
+            // create payout
+            $payout = new PayoutMethod();
+            $payout->fill($request->all());
+            $payout->user_id = $user->id;
+            $payout->save();
+        }
+        return response()->json([
+            'status'  => 202,
+            'message' => 'Payout Method Saved Successfully...',
+        ], 200);
+    }
+    public function getPayoutMethord(Request $request){
+        $payout = PayoutMethod::where('user_id',Auth::user()->id)->first();
+        return response()->json([
+            'status'  => 202,
+            'message' => 'Payout Method Saved Successfully...',
+            'data'    => $payout,
         ], 200);
     }
 }

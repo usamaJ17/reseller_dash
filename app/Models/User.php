@@ -24,6 +24,7 @@ class User extends Authenticatable
         'jwt_token',
         'otp',
         'jwt_password',
+        'portal_id',
         'is_verified',
         'temp',
         'forgot_password',
@@ -51,4 +52,8 @@ class User extends Authenticatable
         'otp_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+    public function PayoutMethod()
+    {
+        return $this->hasOne(PayoutMethod::class);
+    }
 }

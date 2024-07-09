@@ -26,8 +26,9 @@ class addToken
                     'email' => $user->email,
                     'password' => $dc,
                 ]);   
-                $responseJson = $response->json();             
+                $responseJson = $response->json();         
                 $user->jwt_token = $responseJson['data']['token'];
+                $user->portal_id = $responseJson['data']['id'];
                 $user->save();
             }
         }

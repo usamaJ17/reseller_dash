@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('contact')->nullable();
             $table->string('forgot_password')->nullable();
             $table->text('business')->nullable();
+            $table->integer('portal_id')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('otp_verified_at')->nullable();
             $table->string('password');

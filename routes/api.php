@@ -8,6 +8,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CommissionController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,5 +54,8 @@ Route::middleware(['auth:sanctum','cros','add.token'])->group(function () {
   Route::get('countries',[HelperController::class,'getCountries']);
   Route::get('states/{id}',[HelperController::class,'getStates']);
   Route::get('cities/{id}',[HelperController::class,'getCities']);
+
+  Route::post('payout_methord',[AuthController::class,'savePayoutMethord']);
+  Route::get('payout_methord',[AuthController::class,'getPayoutMethord']);
 });
 Route::post('change_reseller_status',[AuthController::class,'changeResellerStatus'])->middleware('cros');

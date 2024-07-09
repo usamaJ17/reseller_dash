@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -15,84 +16,107 @@ class OrderController extends Controller
     {
         $trx_id = null;
         $response_1 = null;
-        // foreach ($request->products as $item) {
-        //     $requestParameters = [
-        //         'quantity' => $item['quantity'],
-        //         'product_id' => $item['id'],
-        //         'custom_price' => $item['custom_price'],
-        //         'is_buy_now' => 0,
-        //         'trx_id' => $trx_id,
-        //     ];
-        //     // Send the POST request with the request parameters
-        //     $response_1 = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_URL') . '/cart-store', $requestParameters);
-        //     if (!$response_1->json()['data']) {
-        //         return response()->json($response_1->json(), 500);
-        //     }
-        //     $trx_id = $response_1->json()['data']['trx_id'];
-        // }
-        $client = Client::find($request->clientID);
         $price = 0;
+        $quantity = [];
+        foreach ($request->products as $key => $item) {
+            $requestParameters = [
+        //         'custom_price' => $item['custom_price'],
+                    "rating" => 0,
+                    "title" => "",
+                    "comment" => "",
+                    "image" => "",
+                    "reseller_portal_user_id" => Auth::user()->portal_id,
+                    "product_id" => "",
+                    "review_id" => "",
+                    "reply" => "",
+                    "id" => $item['id'],
+                    "color_id" => $item['color_id'],
+                    "quantity" => $item['quantity'],
+                    "attribute_values" => $item['attribute_values'],
+                    "variants_name" => $item['variants_name'],
+                    "variants_ids" => $item['variants_ids'],
+                    "trx_id" => $trx_id,
+                    "image_text" => "Choose File",
+                    "is_buy_now" => 0,
+            ];
+            // Send the POST request with the request parameters
+            $response_1 = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_WEB') . '/user/addToCart', $requestParameters);
+            if (!$response_1->json()['carts']) {
+                return response()->json($response_1->json(), 500);
+            }
+            $trx_id = $response_1->json()['carts'][0]['trx_id'];
+            $price = $price + ($response_1->json()['carts'][0]['quantity'] * $response_1->json()['carts'][0]['price']);
+            $temp_data = [
+                "id" => $response_1->json()['carts'][$key]['id'],
+                "quantity" => $response_1->json()['carts'][$key]['quantity'],
+            ];
+            $quantity[] = $temp_data;
+        }
+        $client = Client::find($request->clientID);
+        
         $custom_price = 0;
         $commission = 0;
-        foreach ($request->products as $item) {
-            $response = Http::withToken(Auth::user()->jwt_token)
-                ->get(env('ADMIN_PORTAL_URL') . '/product-details' . '/' . $item['id']);
-            $responseJson = $response->json();
-            $p_price = (int)$responseJson['data']['price'];
-            $commission = $commission  + (($item['custom_price'] - $p_price) * $item['quantity']);
-            $total = $p_price * $item['quantity']; 
-            $custom_total = $item['custom_price'] * $item['quantity'];
-            $price = $price + $total;
-            $custom_price = $custom_price + $custom_total;
+        $requestParameters = [
+            "payment_type" => 0,
+            "sub_total" => $price,
+            "reseller_portal_user_id" => Auth::user()->portal_id,
+            "is_reseller_order" => 1,
+            "discount_offer" => 0,
+            "shipping_tax" => 0,
+            "tax" => 0,
+            "coupon_discount" => 0,
+            "total" => $price,
+            'trx_id' => $trx_id,
+            "quantity" => $quantity,
+            "coupon_code"=> "",
+            "coupon"=> [],
+            "checkout_method"=> 2,
+            "buy_now" => 0,
+            'shipping_address' => [
+                "name" => $client->name,
+                "email" => $client->email,
+                "phone_no" => $client->contact,
+                "address" => $client->address,
+                "address_ids" => [
+                    "country_id" => $client->country_id,
+                    "state_id" => $client->state_id,
+                    "city_id" => $client->state_id,
+                ],
+                "country" => $client->country_name,
+                "state" => $client->state_name,
+                "city" => $client->city_name,
+                "postal_code" => $client->postal_code,
+            ],
+            'billing_address' => [
+                "name" => $client->name,
+                "email" => $client->email,
+                "phone_no" => $client->contact,
+                "address" => $client->address,
+                "address_ids" => [
+                    "country_id" => $client->country_id,
+                    "state_id" => $client->state_id,
+                    "city_id" => $client->state_id,
+                ],
+                "country" => $client->country_name,
+                "state" => $client->state_name,
+                "city" => $client->city_name,
+                "postal_code" => $client->postal_code,
+            ],
+        ];
+        $response = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_WEB') . '/user/confirm-order', $requestParameters);
+        if (!$response->json()['success']) {
+            return response()->json($response->json(), 500);
         }
-        // $requestParameters = [
-        //     "payment_type" => 0,
-        //     "sub_total" => $price,
-        //     "discount_offer" => 0,
-        //     "shipping_tax" => 0,
-        //     "tax" => 0,
-        //     "coupon_discount" => 0,
-        //     "total" => $price,
-        //     'trx_id' => $trx_id,
-        //     'client_id' => $request->clientID,
-        //     'shipping_address' => [
-        //         "name" => $client->name,
-        //         "email" => $client->email,
-        //         "phone_no" => $client->contact,
-        //         "address" => $client->address,
-        //         "address_ids" => [
-        //             "country_id" => $client->country_id,
-        //             "state_id" => $client->state_id,
-        //             "city_id" => $client->city_id,
-        //         ],
-        //         "country" => "United States",
-        //         "state" => "new york",
-        //         "city" => "new york",
-        //         "postal_code" => $client->postal_code,
-        //     ],
-        //     'billing_address' => [
-        //         "name" => $client->name,
-        //         "email" => $client->email,
-        //         "phone_no" => $client->contact,
-        //         "address" => $client->address,
-        //         "address_ids" => [
-        //             "country_id" => $client->country_id,
-        //             "state_id" => $client->state_id,
-        //             "city_id" => $client->city_id,
-        //         ],
-        //         "postal_code" => $client->postal_code,
-        //     ]
-        // ];
-        // $response = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_URL') . '/confirm-order', $requestParameters);
-        // $data = [
-        //     'message' => 'Order Stored Succsessfully',
-        //     'response' => $response->json(),
-        //     'response_1' => $response_1->json(),
-            
-        // ];
-        // return response()->json($data,500);
-        // $order_id = $response->json()['data'][0]['id'];
-        // store locally        
+        $requestParameters = [
+            "payment_type" => "cash_on_delivery",
+            "trx_id" => $trx_id,
+            "is_buy_now" => 0,
+            "is_reseller_api" => 1,
+            "id" => null,
+            "file" => null,
+        ];
+        $response = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_WEB') . '/user/complete-order?code=', $requestParameters);
+        return response($response->body());   
         $order = new Orders();
         $order->commission = $commission;
         $order->status = "Processing";
