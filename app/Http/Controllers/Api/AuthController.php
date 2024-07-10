@@ -266,7 +266,7 @@ class AuthController extends Controller
         $payout = PayoutMethod::where('user_id',Auth::user()->id)->first();
         return response()->json([
             'status'  => 202,
-            'message' => 'Payout Method Saved Successfully...',
+            'message' => 'Payout Method Fetched Successfully...',
             'data'    => $payout,
         ], 200);
     }

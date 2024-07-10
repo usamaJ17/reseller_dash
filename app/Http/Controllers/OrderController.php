@@ -20,7 +20,7 @@ class OrderController extends Controller
         $quantity = [];
         foreach ($request->products as $key => $item) {
             $requestParameters = [
-        //         'custom_price' => $item['custom_price'],
+                    "custom_price" => $item['custom_price'],
                     "rating" => 0,
                     "title" => "",
                     "comment" => "",
