@@ -45,8 +45,6 @@ class ProductController extends Controller
         $selected_variants = $responseJson['product']['selected_variants'];
         $attribute_values = $responseJson['product']['attribute_values'];
         
-        dd($attributes, $selected_variants, $attribute_values);
-        
         $product_attr_variations = array_map(function($attribute) use ($selected_variants, $attribute_values) {
             $attribute_id = $attribute['id'];
             $attribute['values'] = array_filter($attribute_values, function($value) use ($attribute_id, $selected_variants) {
@@ -54,6 +52,8 @@ class ProductController extends Controller
             });
             return $attribute;
         }, $attributes);
+        $product_attr_variations = array_values($product_attr_variations);
+        dd($product_attr_variations);
 
         $colors = [];
         $product_colors = $responseJson['product']['product_colors'];
