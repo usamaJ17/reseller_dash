@@ -52,13 +52,13 @@ class ProductController extends Controller
             });
             return $attribute;
         }, $attributes);
-        // foreach ($product_attr_variations as $key => $item){
-        //     $arr =[];
-        //     foreach ($item['values'] as $value){
-        //         $arr[] = $value;
-        //     }
-        //     $product_attr_variations[$key]['values'] = $arr;
-        // }
+        foreach ($product_attr_variations as $key => $item){
+            $arr =[];
+            foreach ($item['values'] as $value){
+                $arr[] = $value;
+            }
+            $product_attr_variations[$key]['values'] = $arr;
+        }
         
 
         $colors = [];
