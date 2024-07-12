@@ -44,6 +44,7 @@ class ProductController extends Controller
         $attributes = $responseJson['attributes'];
         $selected_variants = $responseJson['product']['selected_variants'];
         $attribute_values = $responseJson['product']['attribute_values'];
+        dd($attribute, $selected_variants, $attribute_values);
         
         $product_attr_variations = array_map(function($attribute) use ($selected_variants, $attribute_values) {
             $attribute_id = $attribute['id'];
@@ -52,6 +53,7 @@ class ProductController extends Controller
             });
             return $attribute;
         }, $attributes);
+
         $colors = [];
         $product_colors = $responseJson['product']['product_colors'];
         foreach ($product_colors as $item){
@@ -97,7 +99,7 @@ class ProductController extends Controller
             "category_name" => $responseJson['product']['category_title'],
             "has_variant" => $responseJson['product']['has_variant'],
             "product_colors" => $colors,
-            "attributes" => json_decode(json_encode($product_attr_variations)),
+            "attributes" => $product_attr_variations,
             "variations" => $variations,
             "rating" => $rating,
             "total_reviews" => $total,
