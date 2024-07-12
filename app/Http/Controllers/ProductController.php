@@ -55,7 +55,7 @@ class ProductController extends Controller
         foreach ($product_attr_variations as $key => $item){
             $arr =[];
             foreach ($item['values'] as $value){
-                $arr[] = $value['value'];
+                $arr[] = $value;
             }
             $product_attr_variations[$key]['values'] = $arr;
         }
