@@ -97,7 +97,7 @@ class ProductController extends Controller
             "category_name" => $responseJson['product']['category_title'],
             "has_variant" => $responseJson['product']['has_variant'],
             "product_colors" => $colors,
-            "attributes" => json_encode($product_attr_variations),
+            "attributes" => json_decode(json_encode($product_attr_variations)),
             "variations" => $variations,
             "rating" => $rating,
             "total_reviews" => $total,
