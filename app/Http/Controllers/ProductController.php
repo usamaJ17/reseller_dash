@@ -52,6 +52,13 @@ class ProductController extends Controller
             });
             return $attribute;
         }, $attributes);
+        foreach ($product_attr_variations as $key => $item){
+            // check if $item['values'] is array or not
+            if(!is_array($item['values'])){
+                dd($item['values']);
+            }
+
+        }
         
 
         $colors = [];
