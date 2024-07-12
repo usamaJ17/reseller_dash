@@ -48,11 +48,10 @@ class ProductController extends Controller
         $product_attr_variations = array_map(function($attribute) use ($selected_variants, $attribute_values) {
             $attribute_id = $attribute['id'];
             $attribute['values'] = array_filter($attribute_values, function($value) use ($attribute_id, $selected_variants) {
-                return $value['attribute_id'] == $attribute_id && in_array($value[], $selected_variants[$attribute_id]);
+                return $value['attribute_id'] == $attribute_id && in_array($value['id'], $selected_variants[$attribute_id]);
             });
             return $attribute;
         }, $attributes);
-        dd($responseJson['attributes'],$product_attr_variations);
         $colors = [];
         $product_colors = $responseJson['product']['product_colors'];
         foreach ($product_colors as $item){
@@ -98,7 +97,7 @@ class ProductController extends Controller
             "category_name" => $responseJson['product']['category_title'],
             "has_variant" => $responseJson['product']['has_variant'],
             "product_colors" => $colors,
-            "attributes" => $product_attr_variations,
+            "attributes" => json_encode($product_attr_variations),
             "variations" => $variations,
             "rating" => $rating,
             "total_reviews" => $total,
