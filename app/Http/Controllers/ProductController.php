@@ -52,8 +52,7 @@ class ProductController extends Controller
             });
             return $attribute;
         }, $attributes);
-        $product_attr_variations = array_values($product_attr_variations);
-        dd($product_attr_variations);
+        
 
         $colors = [];
         $product_colors = $responseJson['product']['product_colors'];
