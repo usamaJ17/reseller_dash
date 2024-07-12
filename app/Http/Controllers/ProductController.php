@@ -48,7 +48,7 @@ class ProductController extends Controller
         $product_attr_variations = array_map(function($attribute) use ($selected_variants, $attribute_values) {
             $attribute_id = $attribute['id'];
             $attribute['values'] = array_filter($attribute_values, function($value) use ($attribute_id, $selected_variants) {
-                return $value['attribute_id'] == $attribute_id && in_array($value['id'], $selected_variants[$attribute_id]);
+                return $value['attribute_id'] == $attribute_id && in_array($value[], $selected_variants[$attribute_id]);
             });
             return $attribute;
         }, $attributes);
