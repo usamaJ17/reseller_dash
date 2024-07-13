@@ -196,12 +196,13 @@ class OrderController extends Controller
     {
         $orders = Orders::where('reseller_id', Auth::user()->id)->get();
         $ordersArray = $orders->map(function ($item) {
-            // foreach ($item->pro_det as $key => $value) {
-            //     $response = Http::withToken(Auth::user()->jwt_token)
-            //     ->get(env('ADMIN_PORTAL_URL') . '/invoice-url' . '/' . $item['order_id']);
-            //     $item->pro_det[$key]['image_url'] = $value['price'];
-            // }
+            $pro_det = $item->pro_det;
+            foreach ($pro_det as $key => $value) {
+                $img_response = Http::get(env('ADMIN_PORTAL_URL') . '/product_thumbnail' . '/' . $value['id']);
+                $pro_det[$key]['image_url'] = $img_response->json()['url']; // Assuming the response has a 'url' key
+            }
             $itemArray = $item->toArray();
+            $itemArray['pro_det'] = $pro_det;
             $itemArray['order_date'] = Carbon::parse($itemArray['created_at'])->format('Y-m-d');
             $response = Http::withToken(Auth::user()->jwt_token)
                 ->get(env('ADMIN_PORTAL_URL') . '/invoice-url' . '/' . $item['order_id']);
