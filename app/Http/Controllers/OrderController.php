@@ -42,19 +42,19 @@ class OrderController extends Controller
             ];
             // Send the POST request with the request parameters
             $response_1 = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_WEB') . '/user/addToCart', $requestParameters);
-            $asd[] = $response_1->json();
-            if (!$response_1->json()['carts']) {
-                return response()->json($response_1->json(), 500);
-            }
-            $trx_id = $response_1->json()['carts'][0]['trx_id'];
-            $price = $price + ($response_1->json()['carts'][0]['quantity'] * $response_1->json()['carts'][0]['price']);
-            $temp_data = [
-                "id" => $response_1->json()['carts'][$key]['id'],
-                "quantity" => $response_1->json()['carts'][$key]['quantity'],
-            ];
-            $quantity[] = $temp_data;
+            $ads[] = $response_1->json();
+            // if (!$response_1->json()['carts']) {
+            //     return response()->json($response_1->json(), 500);
+            // }
+            // $trx_id = $response_1->json()['carts'][0]['trx_id'];
+            // $price = $price + ($response_1->json()['carts'][0]['quantity'] * $response_1->json()['carts'][0]['price']);
+            // $temp_data = [
+            //     "id" => $response_1->json()['carts'][$key]['id'],
+            //     "quantity" => $response_1->json()['carts'][$key]['quantity'],
+            // ];
+            // $quantity[] = $temp_data;
         }
-        dd($asd);
+        dd($ads);
         $client = Client::find($request->clientID);
         
         $custom_price = 0;
