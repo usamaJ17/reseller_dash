@@ -208,6 +208,7 @@ class OrderController extends Controller
                 ->get(env('ADMIN_PORTAL_URL') . '/invoice-url' . '/' . $item['order_id']);
             $itemArray['file'] = $response->json()['pdf_url'];
             unset($itemArray['created_at']);
+            unset($itemArray['updated_at']);
             return $itemArray;
         })->toArray();
         return response()->json($ordersArray);
