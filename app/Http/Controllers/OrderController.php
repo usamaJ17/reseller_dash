@@ -83,7 +83,19 @@ class OrderController extends Controller
         $client = Client::find($request->clientID);
         
         $custom_price = 0;
+        $delivery_amount_total = 0;
         $commission = 0;
+        if(isset($request->shipping)){
+            if($request->shipping == 'Inside Dhaka'){
+                $delivery_amount_total = 120;
+            }else{
+                $delivery_amount_total = 150;
+            }
+        }
+        $order_note = "";
+        if(isset($request->order_note)){
+            $order_note = $request->order_note;
+        }
         $requestParameters = [
             "payment_type" => 0,
             "sub_total" => $price,
@@ -92,6 +104,8 @@ class OrderController extends Controller
             "discount_offer" => 0,
             "shipping_tax" => 0,
             "tax" => 0,
+            'delivery_amount_total'=> $delivery_amount_total,
+            'order_note'=> $order_note,
             "coupon_discount" => 0,
             "total" => $price,
             'trx_id' => $trx_id,
