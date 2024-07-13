@@ -155,6 +155,7 @@ class OrderController extends Controller
             ],
         ];
         $response = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_WEB') . '/user/confirm-order', $requestParameters);
+        dd($response->body());
         if (!$response->json()['success']) {
             return response()->json($response->json(), 500);
         }
