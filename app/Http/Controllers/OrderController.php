@@ -55,7 +55,7 @@ class OrderController extends Controller
                 $err_arr = [
                     'id'=> $item['id'],
                     'variants_ids' => $item['variants_ids'],
-                    "trx_id" => $response_1->json()['carts'],
+                    "trx_id" => $response_1->json(),
                     'portal_id' => Auth::user()->portal_id,
                     'valid_key'=>$valid_key,
                 ];
