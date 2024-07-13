@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Orders;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -9,33 +10,18 @@ use Illuminate\Support\Facades\Http;
 class CommissionController extends Controller
 {
     public function getall(){
-        $order = [
-            [
-                'order_id'=> 1,
-                'sale_amount'=> 10,
-                'commission_amount'=> 100,
-                'order_date'=> "12-5-1"
-            ],
-            [
-                'order_id'=> 1,
-                'sale_amount'=> 10,
-                'commission_amount'=> 100,
-                'order_date'=> "12-5-1"
-            ],
-            [
-                'order_id'=> 1,
-                'sale_amount'=> 10,
-                'commission_amount'=> 100,
-                'order_date'=> "12-5-1"
-            ],
-            [
-                'order_id'=> 1,
-                'sale_amount'=> 10,
-                'commission_amount'=> 100,
-                'order_date'=> "12-5-1"
-            ]
-        ];
-        return response()->json($order);
+        $orders = Orders::where('reseller_id', Auth::user()->id)->get();
+        $data = [];
+        foreach ($orders as $order) {
+            $order_arr = [
+                'order_id' => $order->id,
+                'sale_amount' => $order->total_amount,
+                'commission_amount' => $order->commission,
+                'order_date' => $order->created_at->format('Y-m-d')
+            ];
+            $data[] = $order_arr;
+        }
+        return response()->json($data);
     }
 
     public function getallPayout(){
