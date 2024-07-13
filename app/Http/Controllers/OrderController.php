@@ -51,14 +51,6 @@ class OrderController extends Controller
                 ];
                 $cart_errors[] = $err_arr;
                 continue;
-            }else{
-                $err_arr = [
-                    'id'=> $item['id'],
-                    'variants_ids' => $item['variants_ids'],
-                    "trx_id" => $response_1->json()['carts'][0]['trx_id'],
-                    'portal_id' => Auth::user()->portal_id,
-                ];
-                $cart_errors[] = $err_arr;
             }
             $trx_id = $response_1->json()['carts'][0]['trx_id'];
             $price = $price + ($response_1->json()['carts'][0]['quantity'] * $response_1->json()['carts'][0]['price']);
