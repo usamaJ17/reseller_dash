@@ -74,12 +74,12 @@ class OrderController extends Controller
             $data = [
                 'message' => 'Error in Cart',
                 'errors' => $cart_errors,
-                'response' => $response->json(),
+                'response' => $response->body(),
             ];
             $requestParameters = [
                 'user_id' => Auth::user()->porral_id,
             ];            
-            return response();
+            return response()->json($data, 500);
         }
         $client = Client::find($request->clientID);
         
