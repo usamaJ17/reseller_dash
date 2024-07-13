@@ -77,8 +77,6 @@ class OrderController extends Controller
             $data = [
                 'message' => 'Error in Cart',
                 'errors' => $cart_errors,
-                'response' => $response->body(),
-                'user_id' => Auth::user()->portal_id,
             ];
             return response()->json($data, 500);
         }
