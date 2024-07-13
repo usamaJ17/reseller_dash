@@ -54,8 +54,8 @@ class OrderController extends Controller
             }
             $trx_id = $response_1->json()['carts'][0]['trx_id'];
             $price = $price + ($response_1->json()['carts'][0]['quantity'] * $response_1->json()['carts'][0]['price']);
-            dd(sizeof($response_1->json()['carts']));
-            if(array_key_exists($valid_key, $response_1->json()['carts'])){
+            dd();
+            if($valid_key >= sizeof($response_1->json()['carts'])){
                 $valid_key--;
                 $temp_data = [
                     "id" => $response_1->json()['carts'][$valid_key]['id'],
