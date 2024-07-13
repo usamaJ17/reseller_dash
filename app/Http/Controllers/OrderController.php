@@ -26,9 +26,9 @@ class OrderController extends Controller
         foreach ($request->products as $key => $item) {
             $data = [
                 "id" => $item['id'],
-                "slug" => $item['id'],
+                "slug" => $item['slug'],
                 "quantity" => $item['quantity'],
-                'price' => $item['custom_price'],
+                'price' => $item['price'],
             ];
             $custom_price = $custom_price + ($item['quantity'] * $item['custom_price']);
             $commission = $commission + ($item['quantity'] * (($item['custom_price']+40) - $item['custom_price']));
