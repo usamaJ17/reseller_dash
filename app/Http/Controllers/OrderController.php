@@ -70,14 +70,15 @@ class OrderController extends Controller
             $valid_key++;
         }
         if(!empty($cart_errors)){
-            $data = [
-                'message' => 'Error in Cart',
-                'errors' => $cart_errors,
-            ];
             $requestParameters = [
                 'user_id' => Auth::user()->porral_id,
             ];     
             $response = Http::post(env('ADMIN_PORTAL_URL') . '/delete_cart_api', $requestParameters);       
+            $data = [
+                'message' => 'Error in Cart',
+                'errors' => $cart_errors,
+                'response' => $response->body(),
+            ];
             return response()->json($data, 500);
         }
         $client = Client::find($request->clientID);
