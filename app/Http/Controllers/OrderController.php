@@ -43,7 +43,7 @@ class OrderController extends Controller
             // Send the POST request with the request parameters
             $response_1 = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_WEB') . '/user/addToCart', $requestParameters);
             if (array_key_exists('error', $response_1->json())) {
-                $cart_errors[] = "Error on product with Id : ".$item['id']." And variation : " .$item['variants_ids']. ' - '. $response_1->json();
+                $cart_errors[] = "Error on product with Id : ".$item['id']." And variation : " .$item['variants_ids']. ' - '. $response_1->json()['error'];
             }
             $trx_id = $response_1->json()['carts'][0]['trx_id'];
             $price = $price + ($response_1->json()['carts'][0]['quantity'] * $response_1->json()['carts'][0]['price']);
