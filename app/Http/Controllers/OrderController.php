@@ -18,6 +18,7 @@ class OrderController extends Controller
         $response_1 = null;
         $price = 0;
         $quantity = [];
+        $ads = [];
         foreach ($request->products as $key => $item) {
             $requestParameters = [
                     "custom_price" => $item['custom_price'],
@@ -41,7 +42,7 @@ class OrderController extends Controller
             ];
             // Send the POST request with the request parameters
             $response_1 = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_WEB') . '/user/addToCart', $requestParameters);
-            dd($response_1->json());
+            $asd[] = $response_1->json();
             if (!$response_1->json()['carts']) {
                 return response()->json($response_1->json(), 500);
             }
@@ -53,6 +54,7 @@ class OrderController extends Controller
             ];
             $quantity[] = $temp_data;
         }
+        dd($asd);
         $client = Client::find($request->clientID);
         
         $custom_price = 0;
