@@ -198,7 +198,7 @@ class OrderController extends Controller
         $ordersArray = $orders->map(function ($item) {
             $pro_det = $item->pro_det;
             foreach ($pro_det as $key => $value) {
-                $img_response = Http::get(env('ADMIN_PORTAL_URL') . '/product_thumbnail' . '/' . $value->id);
+                $img_response = Http::get(env('ADMIN_PORTAL_URL_OTHER') . '/product_thumbnail' . '/' . $value->id);
                 dd($img_response, $img_response->json(),$img_response->body());
                 $pro_det[$key]['image_url'] = $img_response; // Assuming the response has a 'url' key
             }
