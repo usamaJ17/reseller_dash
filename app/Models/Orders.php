@@ -17,4 +17,8 @@ class Orders extends Model
         'reseller_id',
         'order_id'
     ];
+    public function getProDetAttribute($value)
+    {
+        return json_decode($value);
+    }
 }
