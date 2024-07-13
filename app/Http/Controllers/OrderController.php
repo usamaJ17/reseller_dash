@@ -60,6 +60,7 @@ class OrderController extends Controller
                     'valid_key'=>$valid_key,
                 ];
                 $cart_errors[] = $err_arr;
+                $trx_id = $response_1->json()['carts'][0]['trx_id'];
                 $valid_key++;
                 continue;
             }
