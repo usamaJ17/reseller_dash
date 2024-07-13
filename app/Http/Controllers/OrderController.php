@@ -79,7 +79,7 @@ class OrderController extends Controller
             $requestParameters = [
                 'user_id' => Auth::user()->porral_id,
             ];            
-            return response()->json($data, 500);
+            return response();
         }
         $client = Client::find($request->clientID);
         
