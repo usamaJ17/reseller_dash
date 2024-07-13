@@ -155,11 +155,10 @@ class OrderController extends Controller
             ],
         ];
         $response = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_WEB') . '/user/confirm-order', $requestParameters);
-        dd($response->body());
         if (!$response->json()['success']) {
             return response()->json($response->json(), 500);
         }
-        $order_id = $response->json()['order_id'];
+        $order_id = $response->json()['order_id'][0];
         $requestParameters = [
             "payment_type" => "cash_on_delivery",
             "trx_id" => $trx_id,
