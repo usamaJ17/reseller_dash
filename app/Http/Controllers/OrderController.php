@@ -14,7 +14,6 @@ class OrderController extends Controller
 {
     public function store(Request $request)
     {
-        return true;
         $trx_id = null;
         $response_1 = null;
         $price = 0;
