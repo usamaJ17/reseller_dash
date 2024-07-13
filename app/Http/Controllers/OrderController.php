@@ -18,7 +18,7 @@ class OrderController extends Controller
         $response_1 = null;
         $price = 0;
         $quantity = [];
-        $ads = [];
+        $cart_errors = [];
         foreach ($request->products as $key => $item) {
             $requestParameters = [
                     "custom_price" => $item['custom_price'],
@@ -42,19 +42,28 @@ class OrderController extends Controller
             ];
             // Send the POST request with the request parameters
             $response_1 = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_WEB') . '/user/addToCart', $requestParameters);
-            $ads[] = $response_1->json();
-            // if (!$response_1->json()['carts']) {
-            //     return response()->json($response_1->json(), 500);
-            // }
-            // $trx_id = $response_1->json()['carts'][0]['trx_id'];
-            // $price = $price + ($response_1->json()['carts'][0]['quantity'] * $response_1->json()['carts'][0]['price']);
-            // $temp_data = [
-            //     "id" => $response_1->json()['carts'][$key]['id'],
-            //     "quantity" => $response_1->json()['carts'][$key]['quantity'],
-            // ];
-            // $quantity[] = $temp_data;
+            if (array_key_exists('error', $response_1->json())) {
+                $cart_errors[] = "Error on product with Id : ".$item['id']." And variation : " .$item['variants_ids']. ' - '. $response_1->json();
+            }
+            $trx_id = $response_1->json()['carts'][0]['trx_id'];
+            $price = $price + ($response_1->json()['carts'][0]['quantity'] * $response_1->json()['carts'][0]['price']);
+            $temp_data = [
+                "id" => $response_1->json()['carts'][$key]['id'],
+                "quantity" => $response_1->json()['carts'][$key]['quantity'],
+            ];
+            $quantity[] = $temp_data;
         }
-        dd($ads);
+        if(!empty($cart_errors)){
+            $data = [
+                'message' => 'Error in Cart',
+                'errors' => $cart_errors,
+            ];
+            $requestParameters = [
+                'user_id' => Auth::user()->email,
+            ];
+            $response = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_URL') . '/delete_cart_api', $requestParameters);
+            return response()->json($data, 500);
+        }
         $client = Client::find($request->clientID);
         
         $custom_price = 0;
