@@ -106,6 +106,12 @@ class OrderController extends Controller
         if(isset($request->order_note)){
             $order_note = $request->order_note;
         }
+        $prev_OrderID = 0;
+        $is_exchange = 0;
+        if(isset($request->prev_OrderID)){
+            $prev_OrderID = $request->prev_OrderID;
+            $is_exchange = 1;
+        }
         $requestParameters = [
             "payment_type" => 0,
             "sub_total" => $price,
@@ -119,6 +125,8 @@ class OrderController extends Controller
             "coupon_discount" => 0,
             "total" => $price,
             'trx_id' => $trx_id,
+            'is_exchange_order_id' =>$prev_OrderID,
+            'is_exchange' =>$is_exchange,
             "quantity" => $quantity,
             "coupon_code"=> "",
             "coupon"=> [],
