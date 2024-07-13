@@ -14,6 +14,7 @@ class OrderController extends Controller
 {
     public function store(Request $request)
     {
+        return true;
         $trx_id = null;
         $response_1 = null;
         $price = 0;
@@ -61,7 +62,6 @@ class OrderController extends Controller
                     "quantity" => $response_1->json()['carts'][$valid_key]['quantity'],
                 ];
             }else{
-                dd("asd");
                 $temp_data = [
                     "id" => $response_1->json()['carts'][$valid_key]['id'],
                     "quantity" => $response_1->json()['carts'][$valid_key]['quantity'],
