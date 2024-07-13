@@ -104,12 +104,12 @@ class AuthController extends Controller
 	    	   'status' => 401,
 	    	   'message'=> 'Invalid Email OR Password...',
 	    	], 401);
-        // }
-        // else if(!$user->is_verified){
-        //     return response()->json([
-        //         'status'  => 401,
-        //         'message'=> 'Your account is not approved yet, Please wait for admin approval...',
-        //      ], 401);
+        }
+        else if(!$user->is_verified){
+            return response()->json([
+                'status'  => 401,
+                'message'=> 'Your account is not approved yet, Please wait for admin approval...',
+             ], 401);
         }else{
             // check if user verify OTP in 1 day
             if($user->otp_verified_at == null || $user->otp_verified_at->diffInDays(now()) > 1){
