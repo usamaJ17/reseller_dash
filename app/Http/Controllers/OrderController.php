@@ -69,6 +69,7 @@ class OrderController extends Controller
             $quantity[] = $temp_data;
             $valid_key++;
         }
+        dd($cart_errors);
         if(!empty($cart_errors)){
             $requestParameters = [
                 'user_id' => Auth::user()->portal_id,
