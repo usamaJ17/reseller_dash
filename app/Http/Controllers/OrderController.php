@@ -199,7 +199,8 @@ class OrderController extends Controller
             $pro_det = $item->pro_det;
             foreach ($pro_det as $key => $value) {
                 $img_response = Http::get(env('ADMIN_PORTAL_URL') . '/product_thumbnail' . '/' . $value['id']);
-                $pro_det[$key]['image_url'] = $img_response->json()['url']; // Assuming the response has a 'url' key
+                dd($img_response, $img_response->json(),$img_response->body());
+                $pro_det[$key]['image_url'] = $img_response; // Assuming the response has a 'url' key
             }
             $itemArray = $item->toArray();
             $itemArray['pro_det'] = $pro_det;
