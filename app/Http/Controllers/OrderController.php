@@ -19,6 +19,7 @@ class OrderController extends Controller
         $price = 0;
         $quantity = [];
         $cart_errors = [];
+        $valid_key = 0;
         foreach ($request->products as $key => $item) {
             $requestParameters = [
                     "custom_price" => $item['custom_price'],
@@ -49,10 +50,11 @@ class OrderController extends Controller
             $trx_id = $response_1->json()['carts'][0]['trx_id'];
             $price = $price + ($response_1->json()['carts'][0]['quantity'] * $response_1->json()['carts'][0]['price']);
             $temp_data = [
-                "id" => $response_1->json()['carts'][$key]['id'],
-                "quantity" => $response_1->json()['carts'][$key]['quantity'],
+                "id" => $response_1->json()['carts'][$valid_key]['id'],
+                "quantity" => $response_1->json()['carts'][$valid_key]['quantity'],
             ];
             $quantity[] = $temp_data;
+            $valid_key++;
         }
         if(!empty($cart_errors)){
             $data = [
