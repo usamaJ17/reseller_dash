@@ -71,13 +71,14 @@ class OrderController extends Controller
         }
         if(!empty($cart_errors)){
             $requestParameters = [
-                'user_id' => Auth::user()->porral_id,
+                'user_id' => Auth::user()->portal_id,
             ];     
             $response = Http::post(env('ADMIN_PORTAL_URL') . '/delete_cart_api', $requestParameters);       
             $data = [
                 'message' => 'Error in Cart',
                 'errors' => $cart_errors,
                 'response' => $response->body(),
+                'user_id' => Auth::user()->portal_id,
             ];
             return response()->json($data, 500);
         }
