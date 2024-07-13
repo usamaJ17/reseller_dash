@@ -59,6 +59,7 @@ class OrderController extends Controller
                     'portal_id' => Auth::user()->portal_id,
                 ];
                 $cart_errors[] = $err_arr;
+                continue;
             }
             $trx_id = $response_1->json()['carts'][0]['trx_id'];
             $price = $price + ($response_1->json()['carts'][0]['quantity'] * $response_1->json()['carts'][0]['price']);
