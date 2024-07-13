@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('order_id')->nullable();
             $table->string('status')->nullable();
             $table->string('customer_name')->nullable();
+            $table->text('pro_det')->nullable();
             $table->float('commission')->nullable();
             $table->float('total_amount')->nullable();
             $table->timestamps();

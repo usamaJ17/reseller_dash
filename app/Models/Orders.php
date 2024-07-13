@@ -13,6 +13,7 @@ class Orders extends Model
         'status',
         'customer_name',
         'total_amount',
+        'pro_det',
         'reseller_id',
         'order_id'
     ];

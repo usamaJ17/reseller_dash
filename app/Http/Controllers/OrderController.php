@@ -20,7 +20,18 @@ class OrderController extends Controller
         $quantity = [];
         $cart_errors = [];
         $valid_key = 0;
+        $custom_price = 0;
+        $commission = 0;
+        $pro_det = [];
         foreach ($request->products as $key => $item) {
+            $data = [
+                "id" => $item['id'],
+                "quantity" => $item['quantity'],
+                'price' => $item['custom_price'],
+            ];
+            $custom_price = $custom_price + ($item['quantity'] * $item['custom_price']);
+            $commission = $commission + ($item['quantity'] * (($item['custom_price']+40) - $item['custom_price']));
+            $pro_det[] = $data;
             $requestParameters = [
                     "custom_price" => $item['custom_price'],
                     "rating" => 0,
@@ -82,9 +93,7 @@ class OrderController extends Controller
         }
         $client = Client::find($request->clientID);
         
-        $custom_price = 0;
         $delivery_amount_total = 0;
-        $commission = 0;
         if(isset($request->shipping)){
             if($request->shipping == 'Inside Dhaka'){
                 $delivery_amount_total = 120;
@@ -149,6 +158,7 @@ class OrderController extends Controller
         if (!$response->json()['success']) {
             return response()->json($response->json(), 500);
         }
+        $order_id = $response->json()['order_id'];
         $requestParameters = [
             "payment_type" => "cash_on_delivery",
             "trx_id" => $trx_id,
@@ -158,13 +168,13 @@ class OrderController extends Controller
             "file" => null,
         ];
         $response = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_WEB') . '/user/complete-order?code=', $requestParameters);
-        return response($response->body());   
         $order = new Orders();
         $order->commission = $commission;
         $order->status = "Processing";
+        $order->pro_det = json_encode($pro_det);
         $order->customer_name = $client->name;
         $order->total_amount = $custom_price;
-        // $order->order_id = $order_id;
+        $order->order_id = $order_id;
         $order->reseller_id = Auth::user()->id;
         $order->save();
         $data = [
