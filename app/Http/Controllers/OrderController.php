@@ -75,7 +75,7 @@ class OrderController extends Controller
                 'errors' => $cart_errors,
             ];
             $requestParameters = [
-                'user_id' => Auth::user()->email,
+                'user_id' => Auth::user()->porral_id,
             ];
             $response = Http::withToken(Auth::user()->jwt_token)->post(env('ADMIN_PORTAL_URL') . '/delete_cart_api', $requestParameters);
             return response()->json($data, 500);
