@@ -61,6 +61,7 @@ class OrderController extends Controller
                     "quantity" => $response_1->json()['carts'][$valid_key]['quantity'],
                 ];
             }else{
+                dd("asd");
                 $temp_data = [
                     "id" => $response_1->json()['carts'][$valid_key]['id'],
                     "quantity" => $response_1->json()['carts'][$valid_key]['quantity'],
