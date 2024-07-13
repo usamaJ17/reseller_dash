@@ -51,25 +51,21 @@ class OrderController extends Controller
                 ];
                 $cart_errors[] = $err_arr;
                 continue;
-            }else{
-                $err_arr = [
-                    'id'=> $item['id'],
-                    'variants_ids' => $item['variants_ids'],
-                    "trx_id" => $response_1->json(),
-                    'portal_id' => Auth::user()->portal_id,
-                    'valid_key'=>$valid_key,
-                ];
-                $cart_errors[] = $err_arr;
-                $trx_id = $response_1->json()['carts'][0]['trx_id'];
-                $valid_key++;
-                continue;
             }
             $trx_id = $response_1->json()['carts'][0]['trx_id'];
             $price = $price + ($response_1->json()['carts'][0]['quantity'] * $response_1->json()['carts'][0]['price']);
-            $temp_data = [
-                "id" => $response_1->json()['carts'][$valid_key]['id'],
-                "quantity" => $response_1->json()['carts'][$valid_key]['quantity'],
-            ];
+            if(array_key_exists($valid_key, $response_1->json()['carts'])){
+                $valid_key--;
+                $temp_data = [
+                    "id" => $response_1->json()['carts'][$valid_key]['id'],
+                    "quantity" => $response_1->json()['carts'][$valid_key]['quantity'],
+                ];
+            }else{
+                $temp_data = [
+                    "id" => $response_1->json()['carts'][$valid_key]['id'],
+                    "quantity" => $response_1->json()['carts'][$valid_key]['quantity'],
+                ];
+            }
             $quantity[] = $temp_data;
             $valid_key++;
         }
