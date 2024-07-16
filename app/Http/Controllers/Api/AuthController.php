@@ -72,11 +72,19 @@ class AuthController extends Controller
     }
     // API update profile
     public function apiUpdateProfile(Request $request){
-        dd($request->all());
-        $user = Auth::user();
-        $user->name = $request->name;
-        $user->contact = $request->contact;
-        $user->business = $request->business;
+        $user = User::where('email',$request->email)->first();
+        if(!$user){
+            return response()->json([
+                'status'  => 401,
+                'message' => 'Invalid Email...',
+            ], 401);
+        }
+        $user->name = $request->first_name;
+        $user->contact = $request->phone;
+        $user->commission_rate = $request->commission_rate;
+        if($request->password && $request->password != '' && $request->password != null){
+            $user->password = Hash::make($request->password);
+        }
         $user->save();
         return response()->json([
             'status'  => 202,

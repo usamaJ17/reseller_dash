@@ -26,6 +26,7 @@ class User extends Authenticatable
         'jwt_password',
         'portal_id',
         'is_verified',
+        'commission_rate',
         'temp',
         'forgot_password',
         'contact',
