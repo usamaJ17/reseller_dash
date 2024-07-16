@@ -70,6 +70,20 @@ class AuthController extends Controller
             'message' => 'Profile Updated Successfully...',
         ], 200);
     }
+    // API update profile
+    public function apiUpdateProfile(Request $request){
+        dd($request->all());
+        $user = Auth::user();
+        $user->name = $request->name;
+        $user->contact = $request->contact;
+        $user->business = $request->business;
+        $user->save();
+        return response()->json([
+            'status'  => 202,
+            'message' => 'Profile Updated Successfully...',
+        ], 200);
+    }
+
     public function updatePassword(Request $request){
         $user = Auth::user();
         if(!Hash::check($request->old_password,$user->password)){
@@ -197,7 +211,7 @@ class AuthController extends Controller
                     'first_name' => $user->name,
                     'last_name' => $user->name,
                     'email' => $user->email,
-                    'contact' => $user->contact,
+                    'phone' => $user->contact,
                     'business' => $user->business,
                     'password' => $user->temp,
                     'password_confirmation' => $user->temp,
