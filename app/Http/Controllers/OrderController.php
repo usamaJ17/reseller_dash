@@ -221,4 +221,13 @@ class OrderController extends Controller
         })->toArray();
         return response()->json($ordersArray);
     }
+    public function getAllAction(){
+        $data = [
+            'order_id' => rand(23,56),
+            'type' => 'replace',
+            'date' => '2021-09-23',
+            'status' => 'Cancel',
+        ];
+        return response()->json($data,200);
+    }
 }
