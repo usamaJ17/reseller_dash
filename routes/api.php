@@ -48,7 +48,7 @@ Route::middleware(['auth:sanctum','cros','add.token'])->group(function () {
   Route::post('logout',[AuthController::class,'logout']);
   Route::post('store_order',[OrderController::class,'store']);
   Route::get('orders',[OrderController::class,'getall']);
-  Route::get('orders/action',[OrderController::class,'getAllAction']);
+  Route::get('orders/request',[OrderController::class,'getAllAction']);
   Route::post('request_action',[OrderController::class,'requestAction']);
   Route::get('commissions',[CommissionController::class,'getall']);
   Route::get('payouts',[CommissionController::class,'getallPayout']);
